@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -164,6 +165,8 @@ namespace PT1
             string line;
             int index = 0;
             int errors = 0;
+            ArrayList errorList = new ArrayList();
+
             Console.WriteLine("Validating TAFF File. " + "\n");
 
             while (index < filelines.Length)
@@ -220,6 +223,7 @@ namespace PT1
                         {
                             Console.WriteLine("Line: " + trimmedline + " : CONFIGURATION Block -> Invalid");
                             errors++;
+                            errorList.Add(trimmedline);
                             Console.WriteLine("Errors Found: " + errors + " .");
                         }
                     }
@@ -254,18 +258,21 @@ namespace PT1
                             {
                                 Console.WriteLine("Line: " + allocationCount + " : ALLOCATIONS CONFIG Block -> Invalid");
                                 errors++;
+                                errorList.Add(allocationCount);
                                 Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!allocationsDataTasks.IsMatch(taskCount))
                             {
                                 Console.WriteLine("Line: " + taskCount + " : ALLOCATIONS CONFIG Block -> Valid");
                                 errors++;
+                                errorList.Add(taskCount);
                                 Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!allocationsDataProcessors.IsMatch(processorCount))
                             {
                                 Console.WriteLine("Line: " + processorCount + " : ALLOCATIONS CONFIG Block -> Valid");
                                 errors++;
+                                errorList.Add(processorCount);
                                 Console.WriteLine("Errors Found: " + errors + " .");
                             }
                         }
@@ -299,12 +306,14 @@ namespace PT1
                             {
                                 Console.WriteLine("Line: " + allocationID + " : ALLOCATION CONFIG Block -> Invalid");
                                 errors++;
+                                errorList.Add(allocationID);
                                 Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!allocationDataMap.IsMatch(allocationMAP))
                             {
                                 Console.WriteLine("Line: " + allocationMAP + " : ALLOCATION CONFIG Block -> Invalid");
                                 errors++;
+                                errorList.Add(allocationMAP);
                                 Console.WriteLine("Errors Found: " + errors + " .");
                             }
                         }
@@ -316,6 +325,7 @@ namespace PT1
                 {
                     Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match TAFF Syntax -> Invalid");
                     errors++;
+                    errorList.Add(trimmedline);
                     Console.WriteLine("Errors Found: " + errors + " .");
                 }
 
@@ -329,6 +339,16 @@ namespace PT1
             {
                 Console.WriteLine("The TAFF file is invalid.");
                 Console.WriteLine("Number of errors found: " + errors + " .");
+
+                Console.WriteLine("Errors are as follows: \n ");
+
+                int errCount = 0;
+
+                foreach (string error in errorList)
+                {
+                    Console.WriteLine("Error- " + errCount + " : " + error);
+                    errCount++;
+                }
             }
 
             else
@@ -343,6 +363,8 @@ namespace PT1
             string line;
             int index = 0;
             int errors = 0;
+            ArrayList errorList = new ArrayList();
+
             Console.WriteLine("Validating CFF File. " + "\n");
 
             while (index < filelines.Length)
@@ -379,7 +401,7 @@ namespace PT1
                 Regex programDataTasks = new Regex("TASKS=.*");
                 Regex programDataProcessors = new Regex("PROCESSORS=.*");
 
-                Regex tasksData = new Regex("^TASKS$");
+                Regex tasksData = new Regex("TASKS");
                 Regex tasksDataEndpoint = new Regex("END-TASKS");
 
                 Regex taskData = new Regex("^TASK$");
@@ -392,7 +414,7 @@ namespace PT1
                 Regex taskDataDOWNLOAD = new Regex("DOWNLOAD=.*");
                 Regex taskDataUPLOAD = new Regex("UPLOAD=.*");
 
-                Regex processorsData = new Regex("^PROCESSORS$");
+                Regex processorsData = new Regex("PROCESSORS");
                 Regex processorsDataEndpoint = new Regex("END-PROCESSORS");
 
                 Regex processorData = new Regex("^PROCESSOR$");
@@ -405,8 +427,8 @@ namespace PT1
                 Regex processorDataDOWNLOAD = new Regex("DOWNLOAD=.*");
                 Regex processorDataUPLOAD = new Regex("UPLOAD=.*");
 
-                Regex processorTypesData = new Regex("PROCESSOR-TYPES");
-                Regex processorTypesDataEndpoint = new Regex("END-PROCESSOR-TYPES");
+                Regex processorsTypesData = new Regex("PROCESSOR-TYPES");
+                Regex processorsTypesDataEndpoint = new Regex("END-PROCESSOR-TYPES");
 
                 Regex processorTypeData = new Regex("PROCESSOR-TYPE");
                 Regex processorTypeDataEndpoint = new Regex("END-PROCESSOR-TYPE");
@@ -435,10 +457,584 @@ namespace PT1
                     Console.WriteLine("Line: " + trimmedline + " : Comment Line -> Valid");
                 }
 
+                else if (logfileData.IsMatch(trimmedline))
+                {
+                    if (logfileDataEndpoint.IsMatch(trimmedline))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : END-LOGFILE -> Valid");
+                    }
+
+                    else
+                    {
+                        index = IncrementIndex(index, 1);
+                        string filename = filelines[index].Trim();
+
+                        if (logfileDataname.IsMatch(filename))
+                        {
+                            Console.WriteLine("Line: " + trimmedline + " : LOGFILE -> Valid");
+                            Console.WriteLine("Line: " + filename + " : LOGFILE BLOCK  -> Valid");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Line: " + trimmedline + " : LOGFILE BLOCK -> Invalid");
+                            errors++;
+                            errorList.Add(trimmedline);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+                    }
+                }
+
+                else if (limitsData.IsMatch(trimmedline))
+                {
+                    if (limitsDataEndpoint.IsMatch(trimmedline))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : END-LOGFILE -> Valid");
+                    }
+
+                    else
+                    {
+                        index = IncrementIndex(index, 1);
+                        string minimumTasks = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string maximumTasks = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string minimumProcessors = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string maximumProcessors = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string minimumProcessorFrequency = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string maximumProcessorFrequency = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string minimumRam = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string maximumRam = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string minimumDownload = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string maximumDownload = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string minimumUpload = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string maximumUpload = filelines[index].Trim();
+
+                        if (limitsDataMinimumTasks.IsMatch(minimumTasks) 
+                            && limitsDataMinimumProcessors.IsMatch(minimumProcessors) 
+                            && limitsDataMinimumProcessorFrequency.IsMatch(minimumProcessorFrequency) 
+                            && limitsDataMinimumRam.IsMatch(minimumRam) 
+                            && limitsDataMinimumDownload.IsMatch(minimumDownload) 
+                            && limitsDataMinimumUpload.IsMatch(minimumUpload) 
+                            && limitsDataMaximumTasks.IsMatch(maximumTasks) 
+                            && limitsDataMaximumProcessors.IsMatch(maximumProcessors) 
+                            && limitsDataMaximumProcessorFrequency.IsMatch(maximumProcessorFrequency) 
+                            && limitsDataMaximumRam.IsMatch(maximumRam) 
+                            && limitsDataMaximumDownload.IsMatch(maximumDownload) 
+                            && limitsDataMaximumUpload.IsMatch(maximumUpload) )
+                        {
+                            Console.WriteLine("Line: " + trimmedline + " : LIMITS -> Valid");
+                            Console.WriteLine("Line: " + minimumTasks + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + minimumProcessors + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + minimumProcessorFrequency + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + minimumRam + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + minimumDownload + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + minimumUpload + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + maximumTasks + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + maximumProcessors + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + maximumProcessorFrequency + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + maximumRam + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + maximumDownload + " : LIMITS BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + maximumUpload + " : LIMITS BLOCK  -> Valid");
+                        }
+
+                        else
+                        {
+                            if (!limitsDataMinimumTasks.IsMatch(minimumTasks))
+                            {
+                                Console.WriteLine("Line: " + minimumTasks + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(minimumTasks);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMinimumProcessors.IsMatch(minimumProcessors))
+                            {
+                                Console.WriteLine("Line: " + minimumProcessors + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(minimumProcessors);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMinimumProcessorFrequency.IsMatch(minimumProcessorFrequency))
+                            {
+                                Console.WriteLine("Line: " + minimumProcessorFrequency + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(minimumProcessorFrequency);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMinimumRam.IsMatch(minimumRam))
+                            {
+                                Console.WriteLine("Line: " + minimumRam + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(minimumRam);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMinimumDownload.IsMatch(minimumDownload))
+                            {
+                                Console.WriteLine("Line: " + minimumDownload + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(minimumDownload);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMinimumUpload.IsMatch(minimumUpload))
+                            {
+                                Console.WriteLine("Line: " + minimumUpload + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(minimumUpload);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMaximumTasks.IsMatch(maximumTasks))
+                            {
+                                Console.WriteLine("Line: " + maximumTasks + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(maximumTasks);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMaximumProcessors.IsMatch(maximumProcessors))
+                            {
+                                Console.WriteLine("Line: " + maximumProcessors + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(maximumProcessors);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMaximumProcessorFrequency.IsMatch(maximumProcessorFrequency))
+                            {
+                                Console.WriteLine("Line: " + maximumProcessorFrequency + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(maximumProcessorFrequency);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMaximumRam.IsMatch(maximumRam))
+                            {
+                                Console.WriteLine("Line: " + maximumRam + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(maximumRam);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMaximumDownload.IsMatch(maximumDownload))
+                            {
+                                Console.WriteLine("Line: " + maximumDownload + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(maximumDownload);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            if (!limitsDataMaximumUpload.IsMatch(maximumUpload))
+                            {
+                                Console.WriteLine("Line: " + maximumUpload + " : LIMITS BLOCK  -> Invalid");
+                                errors++;
+                                errorList.Add(maximumUpload);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                        }
+                    }
+                }
+
+                else if (programData.IsMatch(trimmedline))
+                {
+                    if (programDataEndpoint.IsMatch(trimmedline))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : END-PROGRAM -> Valid");
+                    }
+
+                    else
+                    {
+                        index = IncrementIndex(index, 1);
+                        string programDuration = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string programTasks = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string programProcessors = filelines[index].Trim();
+
+                        if (programDataDuration.IsMatch(programDuration) && programDataTasks.IsMatch(programTasks) && programDataProcessors.IsMatch(programProcessors))
+                        {
+                            Console.WriteLine("Line: " + trimmedline + " : PROGRAM -> Valid");
+                            Console.WriteLine("Line: " + programDuration + " : PROGRAM BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + programTasks + " : PROGRAM BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + programProcessors + " : PROGRAM BLOCK  -> Valid");
+                        }
+
+                        else
+                        {
+                            if(!programDataDuration.IsMatch(programDuration))
+                            {
+                                Console.WriteLine("Line: " + programDataDuration + " : PROGRAM BLOCK  -> Valid");
+                                errors++;
+                                errorList.Add(programDataDuration);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            
+                            if (!programDataTasks.IsMatch(programTasks))
+                            {
+                                Console.WriteLine("Line: " + programDataTasks + " : PROGRAM BLOCK  -> Valid");
+                                errors++;
+                                errorList.Add(programDataTasks);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                            
+                            if (!programDataProcessors.IsMatch(programProcessors))
+                            {
+                                Console.WriteLine("Line: " + programDataProcessors + " : PROGRAM BLOCK  -> Valid");
+                                errors++;
+                                errorList.Add(programDataProcessors);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                        }
+                    }
+                }
+
+                else if (tasksData.IsMatch(trimmedline))
+                {
+                    if (tasksDataEndpoint.IsMatch(trimmedline))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : END-TASKS -> Valid");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : TASKS -> Valid");
+                    }
+                }
+
+                else if (taskData.IsMatch(trimmedline))
+                {
+
+                    index = IncrementIndex(index, 1);
+                    string taskID = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string taskRuntime = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string taskReferenceFrequency = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string taskRam = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string taskDownload = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string taskUpload = filelines[index].Trim();
+
+                    if (taskDataID.IsMatch(taskID)
+                        && taskDataRuntime.IsMatch(taskRuntime)
+                        && taskDataReffrequency.IsMatch(taskReferenceFrequency)
+                        && taskDataRAM.IsMatch(taskRam)
+                        && taskDataDOWNLOAD.IsMatch(taskDownload)
+                        && taskDataUPLOAD.IsMatch(taskUpload))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : TASK -> Valid");
+                        Console.WriteLine("Line: " + taskID + " : TASK BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + taskRuntime + " : TASK BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + taskReferenceFrequency + " : TASK BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + taskRam + " : TASK BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + taskDownload + " : TASK BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + taskUpload + " : TASK BLOCK  -> Valid");
+                    }
+
+                    else
+                    {
+                        if (!taskDataID.IsMatch(taskID))
+                        {
+                            Console.WriteLine("Line: " + taskID + " : TASK BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(taskID);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!taskDataRuntime.IsMatch(taskRuntime))
+                        {
+                            Console.WriteLine("Line: " + taskRuntime + " : TASK BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(taskRuntime);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!taskDataReffrequency.IsMatch(taskReferenceFrequency))
+                        {
+                            Console.WriteLine("Line: " + taskReferenceFrequency + " : TASK BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(taskReferenceFrequency);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!taskDataRAM.IsMatch(taskRam))
+                        {
+                            Console.WriteLine("Line: " + taskRam + " : TASK BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(taskRam);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!taskDataDOWNLOAD.IsMatch(taskDownload))
+                        {
+                            Console.WriteLine("Line: " + taskDownload + " : TASK BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(taskDownload);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!taskDataUPLOAD.IsMatch(taskUpload))
+                        {
+                            Console.WriteLine("Line: " + taskUpload + " : TASK BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(taskUpload);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                    }
+
+                }
+
+                else if (taskDataEndpoint.IsMatch(trimmedline))
+                {
+                    Console.WriteLine("Line: " + trimmedline + " : END-TASK -> Valid");
+                }
+
+                else if (processorsData.IsMatch(trimmedline))
+                {
+                    if (processorsDataEndpoint.IsMatch(trimmedline))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : END-PROCESSORS -> Valid");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : PROCESSORS -> Valid");
+                    }
+                }
+
+                else if (processorData.IsMatch(trimmedline))
+                {
+                    index = IncrementIndex(index, 1);
+                    string processorID = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string processorType = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string processorFrequency = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string processorRam = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string processorDownload = filelines[index].Trim();
+                    index = IncrementIndex(index, 1);
+                    string processorUpload = filelines[index].Trim();
+
+                    if (processorDataID.IsMatch(processorID)
+                        && processorDataType.IsMatch(processorType)
+                        && processorDataFrequency.IsMatch(processorFrequency)
+                        && processorDataRAM.IsMatch(processorRam)
+                        && processorDataDOWNLOAD.IsMatch(processorDownload)
+                        && processorDataUPLOAD.IsMatch(processorUpload))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : PROCESSOR -> Valid");
+                        Console.WriteLine("Line: " + processorID + " : PROCESSOR BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + processorType + " : PROCESSOR BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + processorFrequency + " : PROCESSOR BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + processorRam + " : PROCESSOR BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + processorDownload + " : PROCESSOR BLOCK  -> Valid");
+                        Console.WriteLine("Line: " + processorUpload + " : PROCESSOR BLOCK  -> Valid");
+                    }
+
+                    else
+                    {
+                        if (!processorDataID.IsMatch(processorID))
+                        {
+                            Console.WriteLine("Line: " + processorID + " : PROCESSOR BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(processorID);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!processorDataType.IsMatch(processorType))
+                        {
+                            Console.WriteLine("Line: " + processorType + " : PROCESSOR BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(processorType);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!processorDataFrequency.IsMatch(processorFrequency))
+                        {
+                            Console.WriteLine("Line: " + processorFrequency + " : PROCESSOR BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(processorFrequency);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!processorDataRAM.IsMatch(processorRam))
+                        {
+                            Console.WriteLine("Line: " + processorRam + " : PROCESSOR BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(processorRam);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!processorDataDOWNLOAD.IsMatch(processorDownload))
+                        {
+                            Console.WriteLine("Line: " + processorDownload + " : PROCESSOR BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(processorDownload);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                        if (!processorDataUPLOAD.IsMatch(processorUpload))
+                        {
+                            Console.WriteLine("Line: " + processorUpload + " : PROCESSOR BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(processorUpload);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+
+                    }
+
+                }
+
+                else if (processorDataEndpoint.IsMatch(trimmedline))
+                {
+                    Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR -> Valid");
+                }
+
+                else if (processorsTypesData.IsMatch(trimmedline))
+                {
+                    if (processorsTypesDataEndpoint.IsMatch(trimmedline))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR-TYPES -> Valid");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : PROCESSORS-TYPES -> Valid");
+                    }
+                }
+
+                else if (processorTypeData.IsMatch(trimmedline))
+                {
+                    if (processorTypeDataEndpoint.IsMatch(trimmedline))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR-TYPE -> Valid");
+                    }
+
+                    else
+                    {
+                        index = IncrementIndex(index, 1);
+                        string processorName = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string processorC2 = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string processorC1 = filelines[index].Trim();
+                        index = IncrementIndex(index, 1);
+                        string processorC0 = filelines[index].Trim();
+
+                        if (processorTypeDataName.IsMatch(processorName) 
+                            && processorTypeDataC2.IsMatch(processorC2)
+                            && processorTypeDataC1.IsMatch(processorC1)
+                            && processorTypeDataC0.IsMatch(processorC0) )
+                        {
+                            Console.WriteLine("Line: " + trimmedline + " : PROCESSOR-TYPE -> Valid");
+                            Console.WriteLine("Line: " + processorName + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + processorC2 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + processorC1 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                            Console.WriteLine("Line: " + processorC0 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                        }
+
+                        else
+                        {
+                            if (!processorTypeDataName.IsMatch(processorName))
+                            {
+                                Console.WriteLine("Line: " + processorName + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                                errors++;
+                                errorList.Add(processorName);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+
+                            if (!processorTypeDataC2.IsMatch(processorC2))
+                            {
+                                Console.WriteLine("Line: " + processorC2 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                                errors++;
+                                errorList.Add(processorC2);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+
+                            if (!processorTypeDataC1.IsMatch(processorC1))
+                            {
+                                Console.WriteLine("Line: " + processorC1 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                                errors++;
+                                errorList.Add(processorC1);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+
+                            if (!processorTypeDataC0.IsMatch(processorC0))
+                            {
+                                Console.WriteLine("Line: " + processorC0 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                                errors++;
+                                errorList.Add(processorC0);
+                                Console.WriteLine("Errors Found: " + errors + " .");
+                            }
+                        }
+                    }
+                }
+
+                else if (localCommunicationData.IsMatch(trimmedline))
+                {
+                    if (localCommunicationDataEndpoint.IsMatch(trimmedline))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : END-LOCAL-COMMUNICATION -> Valid");
+                    }
+
+                    else
+                    {
+                        index = IncrementIndex(index, 1);
+                        string localCommunicationMAP = filelines[index].Trim();
+
+                        if (localCommunicationDataMAP.IsMatch(localCommunicationMAP))
+                        {
+                            Console.WriteLine("Line: " + trimmedline + " : LOCAL-COMMUNICATION -> Valid");
+                            Console.WriteLine("Line: " + localCommunicationMAP + " : LOCAL-COMMUNICATION BLOCK  -> Valid");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Line: " + localCommunicationMAP + " : LOCAL-COMMUNICATION BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(localCommunicationMAP);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+                    }
+                }
+
+                else if (remoteCommunicationData.IsMatch(trimmedline))
+                {
+                    if (remoteCommunicationDataEndpoint.IsMatch(trimmedline))
+                    {
+                        Console.WriteLine("Line: " + trimmedline + " : END-REMOTE-COMMUNICATION -> Valid");
+                    }
+
+                    else
+                    {
+                        index = IncrementIndex(index, 1);
+                        string remoteCommunicationMAP = filelines[index].Trim();
+
+                        if (remoteCommunicationDataMAP.IsMatch(remoteCommunicationMAP))
+                        {
+                            Console.WriteLine("Line: " + trimmedline + " : REMOTE-COMMUNICATION -> Valid");
+                            Console.WriteLine("Line: " + remoteCommunicationMAP + " : REMOTE-COMMUNICATION BLOCK  -> Valid");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Line: " + remoteCommunicationMAP + " : REMOTE-COMMUNICATION BLOCK  -> Invalid");
+                            errors++;
+                            errorList.Add(remoteCommunicationMAP);
+                            Console.WriteLine("Errors Found: " + errors + " .");
+                        }
+                    }
+                }
+
                 else
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match TAFF Syntax -> Invalid");
+                    Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match CFF Syntax -> Invalid");
                     errors++;
+                    errorList.Add(trimmedline);
                     Console.WriteLine("Errors Found: " + errors + " .");
                 }
 
@@ -452,11 +1048,21 @@ namespace PT1
             {
                 Console.WriteLine("The CFF file is invalid.");
                 Console.WriteLine("Number of errors found: " + errors + " .");
+                
+                Console.WriteLine("Errors are as follows: \n ");
+
+                int errCount = 0;
+
+                foreach(string error in errorList)
+                {
+                    Console.WriteLine("Error- " + errCount + " : " + error);
+                    errCount++;
+                }
             }
 
             else
             {
-                Console.WriteLine("The TAFF file is valid.");
+                Console.WriteLine("The CFF file is valid.");
             }
         }
 
