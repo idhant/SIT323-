@@ -21,7 +21,7 @@ namespace PT1
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            String[] filelines;
+            String[] taffFilelines, cffFilelines;
             
             TextBox textBox1 = new TextBox
             {
@@ -32,6 +32,15 @@ namespace PT1
             };
             Controls.Add(textBox1);
 
+            TextBox textBox2 = new TextBox
+            {
+                Size = new Size(300, 300),
+                Location = new Point(325, 40),
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
+            };
+            Controls.Add(textBox2);
+
             OpenFileDialog theDialog = new OpenFileDialog();
             theDialog.Title = "Open TAFF File";
             //theDialog.Filter = "TXT files|*.txt";
@@ -41,48 +50,25 @@ namespace PT1
                 try
                 {
                     string filename = theDialog.FileName;
-                    string cfffilepath = GetDirectoryPath(filename);
-                 
-                    filelines = File.ReadAllLines(filename);
+
+                    taffFilelines = File.ReadAllLines(filename);
                     Console.WriteLine("TAFF File lines copied to ArrrayList.");
 
-                    
-                    ReadTAFFFileName(filename);
-
                     WriteTAFFFileData(filename, textBox1);
+                    ValidateTAFFFile(taffFilelines);
 
-                    ValidateTAFFFile(filelines);
 
-                    /*
-                    StreamReader streamReader = new StreamReader(filename);
-                    
-                    if (streamReader != null)
-                    {
-                        ReadTAFFFile(streamReader);
-                        textBox1.Text = streamReader.ReadToEnd();
-                        WriteTAFFFileData(streamReader, textBox1);
-                        /*
-                        using (streamReader)
-                        {
-                            // Insert code to read the stream here.
-                            string line;
-                            textBox1.Text = streamReader.ReadToEnd();
-                        }
-                        
-                    }*/
-                
-                    
-                    /*
-                        string[] filelines = File.ReadAllLines(filename);
-                        int index = 0;
-                        TextBox textBox = new TextBox();
+                    string cfffilepath = GetDirectoryPath(filename);
+                    string cfffilename = ReadCFFFileName(filename);
+                    cfffilepath = cfffilepath + "\\" + cfffilename;
+                    Console.WriteLine("Location of the CFF File is: " + cfffilepath);
 
-                        for (index = 0; index < filelines.Length; index++)
-                        {
-                            textBox.Text = filelines[index++] + textBox.Text;
-                        }
-                        MessageBox.Show(textBox.Text);
-                    */
+                    cffFilelines = File.ReadAllLines(cfffilepath);
+                    Console.WriteLine("CFF File lines copied to ArrrayList.");
+
+                    WriteCFFFileData(cfffilepath, textBox2);
+                    ValidateCFFFile(cffFilelines);
+
                 }
                 catch (Exception ex)
                 {
@@ -103,7 +89,7 @@ namespace PT1
         END WHILE
         CLOSE taff file
         */
-        public void ReadTAFFFileName(String filename)
+        public string ReadCFFFileName(String filename)
         {
             Console.WriteLine("Starting function to extract CFF Name from the TAFF File." + "\n");
             StreamReader streamReader = new StreamReader(filename);
@@ -125,6 +111,7 @@ namespace PT1
                         CFFname = regex.Replace(trimmedline, "");
                         String trimmedCFFname;
                         trimmedCFFname = trimQuotes.Replace(CFFname, "");
+                        CFFname = trimmedCFFname;
 
                         //.Trim('"')
                         //CFFname.Trim('"');
@@ -132,16 +119,17 @@ namespace PT1
                         //quoted.replace("\"", "");
                         //Console.WriteLine(CFFname);
                         
-                        Console.WriteLine("CFF File Name Extracted: " + trimmedCFFname + " .");
+                        Console.WriteLine("CFF File Name Extracted: " + CFFname + " .");
                     }
                     else
                     {
                         Console.WriteLine("CFF file name not found, continuing search.....");
                     }
                 }
+                
             }
-
             Console.WriteLine("Ending function to extract CFF Name from the TAFF File." + "\n");
+            return CFFname;
         }
 
         /*
@@ -350,84 +338,140 @@ namespace PT1
 
         }   
 
+        public void ValidateCFFFile(String[] filelines)
+        {
+            string line;
+            int index = 0;
+            int errors = 0;
+            Console.WriteLine("Validating CFF File. " + "\n");
 
-            /*
-            for (int index = 0; index < filelines.Length; index++)
+            while (index < filelines.Length)
             {
-                //Console.WriteLine("Current Index: " + index);
                 string trimmedline = null;
                 trimmedline = filelines[index].Trim();
 
-                Regex comment = new Regex("//.*");
-                Regex configurationData = new Regex("CONFIGURATION-DATA");
-                Regex CFFfilename = new Regex("FILENAME=");
-                Regex configurationDataEndpoint = new Regex("END-CONFIGURATION-DATA");
+                Regex comment = new Regex(@"//.*");
+
+                Regex logfileData = new Regex("LOGFILE");
+                Regex logfileDataname = new Regex("DEFAULT=.*");
+                Regex logfileDataEndpoint = new Regex("END-LOGFILE");
+                
+                Regex limitsData = new Regex("LIMITS");
+                Regex limitsDataEndpoint = new Regex("END-LIMITS");
+                
+                Regex limitsDataMinimumTasks = new Regex("MINIMUM-TASKS=.*");
+                Regex limitsDataMinimumProcessors = new Regex("MINIMUM-PROCESSORS=.*");
+                Regex limitsDataMinimumProcessorFrequency = new Regex("MINIMUM-PROCESSOR-FREQUENCIES=.*");
+                Regex limitsDataMinimumRam = new Regex("MINIMUM-RAM=.*");
+                Regex limitsDataMinimumDownload = new Regex("MINIMUM-DOWNLOAD=.*");
+                Regex limitsDataMinimumUpload = new Regex("MINIMUM-UPLOAD=.*");
+                
+                Regex limitsDataMaximumTasks = new Regex("MAXIMUM-TASKS=.*");
+                Regex limitsDataMaximumProcessors = new Regex("MAXIMUM-PROCESSORS=.*");
+                Regex limitsDataMaximumProcessorFrequency = new Regex("MAXIMUM-PROCESSOR-FREQUENCIES=.*");
+                Regex limitsDataMaximumRam = new Regex("MAXIMUM-RAM=.*");
+                Regex limitsDataMaximumDownload = new Regex("MAXIMUM-DOWNLOAD=.*");
+                Regex limitsDataMaximumUpload = new Regex("MAXIMUM-UPLOAD=.*");
+                
+                Regex programData = new Regex("PROGRAM");
+                Regex programDataEndpoint = new Regex("END-PROGRAM");
+                Regex programDataDuration = new Regex("DURATION=.*");
+                Regex programDataTasks = new Regex("TASKS=.*");
+                Regex programDataProcessors = new Regex("PROCESSORS=.*");
+
+                Regex tasksData = new Regex("^TASKS$");
+                Regex tasksDataEndpoint = new Regex("END-TASKS");
+
+                Regex taskData = new Regex("^TASK$");
+                Regex taskDataEndpoint = new Regex("END-TASK");
+
+                Regex taskDataID = new Regex("ID=.*");
+                Regex taskDataRuntime = new Regex("RUNTIME=.*");
+                Regex taskDataReffrequency = new Regex("REFERENCE-FREQUENCY=.*");
+                Regex taskDataRAM = new Regex("RAM=.*");
+                Regex taskDataDOWNLOAD = new Regex("DOWNLOAD=.*");
+                Regex taskDataUPLOAD = new Regex("UPLOAD=.*");
+
+                Regex processorsData = new Regex("^PROCESSORS$");
+                Regex processorsDataEndpoint = new Regex("END-PROCESSORS");
+
+                Regex processorData = new Regex("^PROCESSOR$");
+                Regex processorDataEndpoint = new Regex("END-PROCESSOR");
+
+                Regex processorDataID = new Regex("ID=.*");
+                Regex processorDataType = new Regex("TYPE=.*");
+                Regex processorDataFrequency = new Regex("FREQUENCY=.*");
+                Regex processorDataRAM = new Regex("RAM=.*");
+                Regex processorDataDOWNLOAD = new Regex("DOWNLOAD=.*");
+                Regex processorDataUPLOAD = new Regex("UPLOAD=.*");
+
+                Regex processorTypesData = new Regex("PROCESSOR-TYPES");
+                Regex processorTypesDataEndpoint = new Regex("END-PROCESSOR-TYPES");
+
+                Regex processorTypeData = new Regex("PROCESSOR-TYPE");
+                Regex processorTypeDataEndpoint = new Regex("END-PROCESSOR-TYPE");
+
+                Regex processorTypeDataName = new Regex("NAME=.*");
+                Regex processorTypeDataC2 = new Regex("C2=.*");
+                Regex processorTypeDataC1 = new Regex("C1=.*");
+                Regex processorTypeDataC0 = new Regex("C0=.*");
+
+                Regex localCommunicationData = new Regex("LOCAL-COMMUNICATION");
+                Regex localCommunicationDataEndpoint = new Regex("END-LOCAL-COMMUNICATION");
+                Regex localCommunicationDataMAP = new Regex("MAP=.*");
+
+                Regex remoteCommunicationData = new Regex("REMOTE-COMMUNICATION");
+                Regex remoteCommunicationDataEndpoint = new Regex("END-REMOTE-COMMUNICATION");
+                Regex remoteCommunicationDataMAP = new Regex("MAP=.*");
+
 
                 if (trimmedline.Length == 0)
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : Empty Line, is valid");
+                    Console.WriteLine("Line: " + trimmedline + " : Empty Line -> Valid");
                 }
 
                 else if (comment.IsMatch(trimmedline))
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : Comment Line, is valid");
+                    Console.WriteLine("Line: " + trimmedline + " : Comment Line -> Valid");
                 }
 
-                else if (configurationData.IsMatch(trimmedline))
+                else
                 {
-                    int fileindex = index + 1;
-                    int endconfigindex = index + 2;
-                    string filename = filelines[fileindex].Trim();
-
-                    string endconfiguration = filelines[endconfigindex].Trim();
-
-                    if(CFFfilename.IsMatch(filename) && configurationDataEndpoint.IsMatch(endconfiguration))
-                    {
-                        Console.WriteLine("Configuration Block is Valid");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Configuration Block is Invalid");
-                        Console.WriteLine(filename);
-                        Console.WriteLine(endconfiguration);
-                    }
+                    Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match TAFF Syntax -> Invalid");
+                    errors++;
+                    Console.WriteLine("Errors Found: " + errors + " .");
                 }
+
+                // increement 1 index after each line check
+                index = IncrementIndex(index, 1);
             }
-            */
-            /*
-            using(streamReader)
+
+            Console.WriteLine("Ending Validation of CFF file. " + "\n");
+
+            if (errors > 0)
             {
-                while ((line = streamReader.ReadLine()) != null)
-                {
-                    string trimmedline = null;
-                    trimmedline = line.Trim();
-                    Regex comment = new Regex("//.*");
-                    Regex configurationData = new Regex("CONFIGURATION-DATA");
-                    Regex configurationDataEndpoint = new Regex("END-CONFIGURATION-DATA");
-
-                    if(trimmedline.Length == 0)
-                    {
-                        Console.WriteLine("Line: " + trimmedline + " : Empty Line, is valid");
-                    }
-
-                    else if (comment.IsMatch(trimmedline))
-                    {
-                        Console.WriteLine("Line: " + trimmedline + " : Comment Line, is valid");
-                    }
-
-                    else if (configurationData.IsMatch(trimmedline))
-                    {
-                        Console.WriteLine("Line: " + trimmedline + " : Configuration Line, is valid ");
-                    }
-                }
+                Console.WriteLine("The CFF file is invalid.");
+                Console.WriteLine("Number of errors found: " + errors + " .");
             }
-            */
-        
+
+            else
+            {
+                Console.WriteLine("The TAFF file is valid.");
+            }
+        }
 
         public void WriteTAFFFileData(String filename, TextBox textBox)
         {
             StreamReader streamReader = new StreamReader(filename);
             textBox.Text = streamReader.ReadToEnd();
+            Console.WriteLine("TAFF File Data printed on screen.");
+        }
+
+        public void WriteCFFFileData(String filename, TextBox textBox)
+        {
+            StreamReader streamReader = new StreamReader(filename);
+            textBox.Text = streamReader.ReadToEnd();
+            Console.WriteLine("CFF File Data printed on screen.");
         }
 
         public string GetDirectoryPath(string file)
