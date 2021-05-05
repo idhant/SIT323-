@@ -42,12 +42,15 @@ namespace PT1
                 {
                     string filename = theDialog.FileName;
                     string cfffilepath = GetDirectoryPath(filename);
-                    Console.WriteLine(cfffilepath);
-
+                 
                     filelines = File.ReadAllLines(filename);
+                    Console.WriteLine("TAFF File lines copied to ArrrayList.");
 
-                    ReadTAFFFile(filename);
+                    
+                    ReadTAFFFileName(filename);
+
                     WriteTAFFFileData(filename, textBox1);
+
                     ValidateTAFFFile(filelines);
 
                     /*
@@ -100,8 +103,9 @@ namespace PT1
         END WHILE
         CLOSE taff file
         */
-        public void ReadTAFFFile(String filename)
+        public void ReadTAFFFileName(String filename)
         {
+            Console.WriteLine("Starting function to extract CFF Name from the TAFF File." + "\n");
             StreamReader streamReader = new StreamReader(filename);
             string line;
             string CFFname = null;
@@ -113,28 +117,31 @@ namespace PT1
                     trimmedline = line.Trim();
                     Console.WriteLine(trimmedline);
                     Regex regex = new Regex("^FILENAME=");
-                    Regex trimQuotes = new Regex("^\"$");
+                    Regex trimQuotes = new Regex("\"");
 
                     if (regex.IsMatch(trimmedline))
                     {
+                        Console.WriteLine("CFF file name found, Extracting name... ");
                         CFFname = regex.Replace(trimmedline, "");
                         String trimmedCFFname;
                         trimmedCFFname = trimQuotes.Replace(CFFname, "");
 
+                        //.Trim('"')
                         //CFFname.Trim('"');
                         //CFFname.Replace("\"", "");
                         //quoted.replace("\"", "");
-                        Console.WriteLine(CFFname);
-                        Console.WriteLine(trimmedCFFname);
+                        //Console.WriteLine(CFFname);
+                        
+                        Console.WriteLine("CFF File Name Extracted: " + trimmedCFFname + " .");
                     }
                     else
                     {
-                        Console.WriteLine("Didnt MAtch");
+                        Console.WriteLine("CFF file name not found, continuing search.....");
                     }
-
-                    //Console.WriteLine(line.Trim());
                 }
             }
+
+            Console.WriteLine("Ending function to extract CFF Name from the TAFF File." + "\n");
         }
 
         /*
@@ -178,11 +185,11 @@ namespace PT1
                 trimmedline = filelines[index].Trim();
 
                 Regex comment = new Regex(@"//.*");
-                
+
                 Regex configurationData = new Regex("CONFIGURATION-DATA");
                 Regex CFFfilename = new Regex("FILENAME=");
                 Regex configurationDataEndpoint = new Regex("END-CONFIGURATION-DATA");
-                
+
                 Regex allocationsData = new Regex("ALLOCATIONS");
                 Regex allocationsDataEndpoint = new Regex("END-ALLOCATIONS");
                 Regex allocationsDataCount = new Regex(@"COUNT=\d");
@@ -236,7 +243,7 @@ namespace PT1
                     {
                         Console.WriteLine("Line: " + trimmedline + " : END-ALLOCATIONS -> Valid");
                     }
-                    
+
                     else
                     {
                         index = IncrementIndex(index, 1);
@@ -267,7 +274,7 @@ namespace PT1
                                 errors++;
                                 Console.WriteLine("Errors Found: " + errors + " .");
                             }
-                            if(!allocationsDataProcessors.IsMatch(processorCount))
+                            if (!allocationsDataProcessors.IsMatch(processorCount))
                             {
                                 Console.WriteLine("Line: " + processorCount + " : ALLOCATIONS CONFIG Block -> Valid");
                                 errors++;
@@ -280,7 +287,7 @@ namespace PT1
 
                 else if (allocationData.IsMatch(trimmedline))
                 {
-                    if(allocationDataEndpoint.IsMatch(trimmedline))
+                    if (allocationDataEndpoint.IsMatch(trimmedline))
                     {
                         Console.WriteLine("Line: " + trimmedline + " : END-ALLOCATION -> Valid");
                     }
@@ -329,7 +336,7 @@ namespace PT1
             }
 
             Console.WriteLine("Ending Validation of TAFF file. " + "\n");
-            
+
             if (errors > 0)
             {
                 Console.WriteLine("The TAFF file is invalid.");
@@ -341,7 +348,8 @@ namespace PT1
                 Console.WriteLine("The TAFF file is valid.");
             }
 
-            
+        }   
+
 
             /*
             for (int index = 0; index < filelines.Length; index++)
@@ -414,7 +422,7 @@ namespace PT1
                 }
             }
             */
-        }
+        
 
         public void WriteTAFFFileData(String filename, TextBox textBox)
         {
@@ -425,7 +433,9 @@ namespace PT1
         public string GetDirectoryPath(string file)
         {
             FileInfo fileInfo = new FileInfo(file);
-            return fileInfo.Directory.ToString();
+            string path = fileInfo.Directory.ToString();
+            Console.WriteLine("CFF File Path: " + path + "");
+            return path;
         }
 
         public int IncrementIndex(int index, int number)
