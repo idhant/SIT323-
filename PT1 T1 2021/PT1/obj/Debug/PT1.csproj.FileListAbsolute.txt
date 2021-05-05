@@ -1,0 +1,10 @@
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\bin\Debug\PT1.exe.config
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\bin\Debug\PT1.exe
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\bin\Debug\PT1.pdb
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.csprojAssemblyReference.cache
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.Properties.Resources.resources
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.csproj.GenerateResource.cache
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.csproj.CoreCompileInputs.cache
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.exe
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.pdb
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.AllocationForm.resources
