@@ -22,6 +22,8 @@ namespace PT1
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            TaskAllocations taskAllocations = new TaskAllocations();
+            
             String[] taffFilelines, cffFilelines;
             
             TextBox textBox1 = new TextBox
@@ -52,23 +54,47 @@ namespace PT1
                 {
                     string filename = theDialog.FileName;
 
-                    taffFilelines = File.ReadAllLines(filename);
-                    Console.WriteLine("TAFF File lines copied to ArrrayList.");
+                    taskAllocations.StoreTAFFLines(filename);
 
-                    WriteTAFFFileData(filename, textBox1);
-                    ValidateTAFFFile(taffFilelines);
+                    taskAllocations.WriteTAFFFileData(filename, textBox1);
 
+                    taskAllocations.ValidateTAFFFile(taskAllocations.getTAFFFileLines());
 
-                    string cfffilepath = GetDirectoryPath(filename);
-                    string cfffilename = ReadCFFFileName(filename);
-                    cfffilepath = cfffilepath + "\\" + cfffilename;
-                    Console.WriteLine("Location of the CFF File is: " + cfffilepath);
+                    taskAllocations.GetDirectoryPath(filename);
 
-                    cffFilelines = File.ReadAllLines(cfffilepath);
+                    taskAllocations.ReadCFFFileName(filename);
+
+                    taskAllocations.ReadCFFFilePath();
+
+                    cffFilelines = File.ReadAllLines(taskAllocations.getCffFilePath());
                     Console.WriteLine("CFF File lines copied to ArrrayList.");
 
-                    WriteCFFFileData(cfffilepath, textBox2);
+                    WriteCFFFileData(taskAllocations.getCffFilePath(), textBox2);
                     ValidateCFFFile(cffFilelines);
+
+
+                    //taskAllocations.setCffFilePath(taskAllocations.)
+
+                    //taffFilelines = File.ReadAllLines(filename);
+                    //Console.WriteLine("TAFF File lines copied to ArrrayList.");
+
+                    //WriteTAFFFileData(filename, textBox1);
+
+                    //ValidateTAFFFile(taffFilelines);
+
+
+                    //string cfffilepath = GetDirectoryPath(filename);
+                    //string cfffilename = ReadCFFFileName(filename);
+                    //taskAllocations.setCffName(cfffilename);
+
+                    //cfffilepath = cfffilepath + "\\" + cfffilename;
+                    //Console.WriteLine("Location of the CFF File is: " + cfffilepath);
+
+                    //cffFilelines = File.ReadAllLines(cfffilepath);
+                    //Console.WriteLine("CFF File lines copied to ArrrayList.");
+
+                    //WriteCFFFileData(cfffilepath, textBox2);
+                    //ValidateCFFFile(cffFilelines);
 
                 }
                 catch (Exception ex)
@@ -113,13 +139,6 @@ namespace PT1
                         String trimmedCFFname;
                         trimmedCFFname = trimQuotes.Replace(CFFname, "");
                         CFFname = trimmedCFFname;
-
-                        //.Trim('"')
-                        //CFFname.Trim('"');
-                        //CFFname.Replace("\"", "");
-                        //quoted.replace("\"", "");
-                        //Console.WriteLine(CFFname);
-                        
                         Console.WriteLine("CFF File Name Extracted: " + CFFname + " .");
                     }
                     else
@@ -342,7 +361,7 @@ namespace PT1
 
                 Console.WriteLine("Errors are as follows: \n ");
 
-                int errCount = 0;
+                int errCount = 1;
 
                 foreach (string error in errorList)
                 {
@@ -1051,7 +1070,7 @@ namespace PT1
                 
                 Console.WriteLine("Errors are as follows: \n ");
 
-                int errCount = 0;
+                int errCount = 1;
 
                 foreach(string error in errorList)
                 {

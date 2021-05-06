@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Allocation.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ErrorForm.cs">
       <SubType>Form</SubType>
