@@ -27,13 +27,32 @@ namespace PT1
             this.allocationID = allocationID;
         }
 
-
-
+        public int[,] getAllocationMap()
+        {
+            return this.allocationMap;
+        }
 
         public Allocation()
         {
             this.allocationID = -1;
             this.allocationMap = null;
+        }
+
+        public void ReadAllocationMap(int processors, int tasks)
+        {
+            Console.WriteLine("Allocation Map Matrix: ");
+            for (int processor = 0; processor < processors; processor++)
+            {
+                for(int task = 0; task < tasks; task++)
+                {
+                    Console.WriteLine("Processor: " + processor + " , Task Number: " + task + " , Assignment:  " + allocationMap[processor,task]);
+                }
+            }
+        }
+
+        public void ReadAllocationID()
+        {
+            Console.WriteLine("Allocation ID: " + allocationID);
         }
 
     }

@@ -30,7 +30,9 @@ namespace PT1
         private int totalTasks;
         private int totalProcessors;
 
-        private Allocation[] allocationList;
+        //private ArrayList allocationList = new ArrayList();
+        private List<Allocation> allocationList = new List<Allocation>();
+        //private Allocation[] allocationList;
 
         public TaskAllocations()
         {
@@ -66,8 +68,6 @@ namespace PT1
         {
             this.cffFilePath = cffFilePath;
         }
-
-
 
         public string getCffFilePath()
         {
@@ -312,7 +312,8 @@ namespace PT1
                         {
                             Console.WriteLine("Line: " + allocationID + " : ALLOCATION CONFIG Block -> Valid");
                             Console.WriteLine("Line: " + allocationMAP + " : ALLOCATION CONFIG Block -> Valid");
-                            RetrieveAllocationDetail(allocationID, allocationMAP);
+                            this.allocationList.Add(RetrieveAllocationDetail(allocationID, allocationMAP));
+                            
                         }
 
                         else
@@ -371,8 +372,23 @@ namespace PT1
 
             else
             {
-                Console.WriteLine("The TAFF file is valid.");
+                Console.WriteLine("The TAFF file is valid. \n");
                 this.isValid = true;
+
+                Console.WriteLine("The details retrieved from the taff file are as follows: ");
+                //Console.WriteLine("CFF File Name: " + cffName);
+                //Console.WriteLine("CFF File Path: " + cffFilePath);
+                Console.WriteLine("Allocation Details: ");
+                Console.WriteLine("Number of Allocations: " + totalAllocations);
+                Console.WriteLine("Number of Processors: " + totalProcessors);
+                Console.WriteLine("Number of Tasks: " + totalTasks);
+                Console.WriteLine("Individual Allocation Details: ");
+                foreach (Allocation allocation in allocationList)
+                {
+                    Console.WriteLine("Allocation ID: " + allocation.getAllocationID());
+                    allocation.ReadAllocationMap(totalProcessors, totalTasks);
+                }
+                    
             }
 
         }
@@ -387,27 +403,33 @@ namespace PT1
             this.totalTasks = Int32.Parse(allocationsDataTasks.Replace(allocationsTasks, ""));
             this.totalProcessors = Int32.Parse(allocationsDataProcessors.Replace(allocationsProcessors, ""));
 
-
+            //this.allocationList = new Allocation[totalAllocations];
+            //this.allocationList = new Allocation[totalAllocations];
 
             Console.WriteLine("TotalAllocations: " + this.totalAllocations + "\n");
             Console.WriteLine("TotalTasks: " + this.totalTasks + "\n");
             Console.WriteLine("TotalProcessors: " + this.totalProcessors + "\n");
         }
 
-        public void RetrieveAllocationDetail(string allocationID, string allocationMAP)
+        public Allocation RetrieveAllocationDetail(string allocationID, string allocationMAP)
         {
             Regex allocationDataID = new Regex(@"ID=");
             Regex allocationDataMap = new Regex(@"MAP=");
 
             int allocationId = Int32.Parse(allocationDataID.Replace(allocationID, ""));
             string allocationMap = allocationDataMap.Replace(allocationMAP, "");
-            this.allocationList = new Allocation[totalAllocations];
+            //Allocation[] allocations = new Allocation[totalAllocations];
+            Allocation allocation = new Allocation();
+
+            //this.allocationList = new Allocation[totalAllocations];
 
 
             if (allocationId < totalAllocations)
             {
                 // id assignment
-                this.allocationList[allocationId].setAllocationID(allocationId);
+                //this.allocationList[allocationId].setAllocationID(allocationId);
+                //allocations[allocationId].setAllocationID(allocationId);
+                allocation.setAllocationID(allocationId);
 
                 // Matrix size init
                 int[,] allocationMatrix = new int[this.totalProcessors, this.totalTasks];
@@ -423,79 +445,30 @@ namespace PT1
                 string[] processorTaskSet = new string[totalProcessors];
                 int[] taskSet = new int[totalTasks];
 
-                for(int processor = 0; processor < totalProcessors; processor++)
+                for (int processor = 0; processor < totalProcessors; processor++)
                 {
                     processorTaskSet[processor] = firstTaskSetRegex.Replace(allocationMap, "");
                     for (int task = 0; task < totalTasks; task++)
                     {
+                        Console.WriteLine("Processor task Set String before: " + processorTaskSet[processor]);
                         taskSet[task] = Int32.Parse(firstTaskRegex.Replace(processorTaskSet[processor], ""));
+                        Console.WriteLine("Processor: " + processor + " , Task Number: " + task + " , Assignment:  " + taskSet[task]);
                         allocationMatrix[processor, task] = taskSet[task];
                         processorTaskSet[processor] = firstTaskRemovalRegex.Replace(processorTaskSet[processor], "");
+                        Console.WriteLine("Processor task Set String after: " + processorTaskSet[processor]);
                     }
-                    allocationMap = firstTaskRemovalRegex.Replace(processorTaskSet[processor], "");
+                    Console.WriteLine("Allocation Map String, before the set removal: " + allocationMap);
+                    allocationMap = firstTaskSetRemovalRegex.Replace(allocationMap, "");
+                    Console.WriteLine("Allocation Map String, after the set removal: " + allocationMap);
                 }
-                this.allocationList[allocationId].setAllocationMap(allocationMatrix);
+                //this.allocationList[allocationId].setAllocationMap(allocationMatrix);
+                //allocations[allocationId].setAllocationMap(allocationMatrix);
+              
+                allocation.setAllocationMap(allocationMatrix);
 
-                /*
-                // Matrix components calculations
-                string baseDigitRegex = @"\d,\d,\d,\d,\d";
-                Regex firstAllocationRegex = new Regex(@";\d,\d,\d,\d,\d");
-                Regex lastAllocationRegex = new Regex(@"\d,\d,\d,\d,\d;");
-                Regex firstAndMiddleAllocationSeparator = new Regex(@"^\d,\d,\d,\d,\d;");
-                
-                //string firstAllocationRegex = @";\d,\d,\d,\d,\d";
-                //string lastAllocationRegex = @"\d,\d,\d,\d,\d;";
-
-                // allocations for p0
-                string firstTasksCombination = firstAllocationRegex.Replace(allocationMap, "");
-                
-                // allocations for p2
-                string lastTasksCombination = lastAllocationRegex.Replace(allocationMap, "");
-
-                // allocations for p1
-                string middleTasksCombination = firstAndMiddleAllocationSeparator.Replace(allocationMap, "");
-                middleTasksCombination = firstAllocationRegex.Replace(middleTasksCombination, "");
-
-                */
-
-
-                /*
-                // separating allocations to add them in the matrix as elements
-                // Static for now, can be converting as a nested loop method
-                string baseSingleDigitRegex = @"\d";
-                Regex firstElementRegex = new Regex(@",\d");
-                Regex lastElementRegex = new Regex(@"\d,");
-                Regex firstElementRemovalRegex = new Regex(@"^\d,");
-                Regex lastElementRemovalRegex = new Regex(@",\d$");
-
-                int firstElement = Int32.Parse(firstElementRegex.Replace(firstTasksCombination, ""));
-                int lastElement = Int32.Parse(lastElementRegex.Replace(firstTasksCombination, ""));
-
-                string removedFirstandLastElements = firstElementRemovalRegex.Replace(firstTasksCombination, "");
-                removedFirstandLastElements = lastElementRemovalRegex.Replace(removedFirstandLastElements, "");
-
-                int secondElement = Int32.Parse(firstElementRegex.Replace(removedFirstandLastElements, ""));
-                int fourthElement = Int32.Parse(lastElementRegex.Replace(removedFirstandLastElements, ""));
-
-                removedFirstandLastElements = first
-                */
-
-
-
-                /*
-                for(int row = 0 ; row < totalProcessors; row++)
-                {
-
-                }
-                */
-
-                //this.allocationList[allocationId].setAlloa
             }
-            
-            //this.allocationList[].setAllocationID = (Int32.Parse(allocationDataID.Replace(allocationID, "")));
+            return allocation;
         }
-
-
 
         public int IncrementIndex(int index, int number)
         {
