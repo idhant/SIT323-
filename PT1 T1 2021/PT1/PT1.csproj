@@ -47,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Allocation.cs" />
+    <Compile Include="Processor.cs" />
+    <Compile Include="ProcessorType.cs" />
+    <Compile Include="Task.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ErrorForm.cs">
       <SubType>Form</SubType>

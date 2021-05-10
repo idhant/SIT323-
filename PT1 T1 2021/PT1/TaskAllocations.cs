@@ -12,7 +12,7 @@ namespace PT1
 {
     class TaskAllocations
     {
-        // array to store the filelines 
+        // Vars
         private String[] taffFileLines;
 
         // error and validation related vars
@@ -34,14 +34,20 @@ namespace PT1
         private List<Allocation> allocationList = new List<Allocation>();
         //private Allocation[] allocationList;
 
-        public TaskAllocations()
+        // Getters and Setters
+        public List<Allocation> getAllocationList()
         {
-
+            return this.allocationList;
         }
 
-        public TaskAllocations(string cffName, int totalAllocations, int totalTasks, int totalProcessors)
+        public void setAllocationList(List<Allocation> allocationList)
         {
+            this.allocationList = allocationList;
+        }
 
+        public bool getIsValid()
+        {
+            return this.isValid;
         }
 
         public void setTotalAllocations(int totalAllocations)
@@ -94,24 +100,26 @@ namespace PT1
             return this.totalProcessors;
         }
 
+
+        // Constructors
+        public TaskAllocations()
+        {
+
+        }
+
+        public TaskAllocations(string cffName, int totalAllocations, int totalTasks, int totalProcessors)
+        {
+
+        }
+
+       
+
         public void StoreTAFFLines(String filename)
         {
             this.taffFileLines = File.ReadAllLines(filename);
             Console.WriteLine("TAFF File lines copied to ArrrayList.");
         }
 
-        /*
-         CFFname = null
-         OPEN taff file
-         WHILE NOT EOF and CFFname == null
-         line = read one line from the taff file
-         remove leading and trailing white spaces
-         IF line starts with “FILENAME” THEN
-         CFFname = extract CFF filename from line
-         END IF
-         END WHILE
-         CLOSE taff file
-        */
         public string ReadCFFFileName(String filename)
         {
             Console.WriteLine("Starting function to extract CFF Name from the TAFF File." + "\n");
@@ -174,8 +182,6 @@ namespace PT1
 
         public void ValidateTAFFFile(String[] filelines)
         {
-            //StreamReader streamReader = new StreamReader(filename);
-            string line;
             int index = 0;
             int errors = 0;
             ArrayList errorList = new ArrayList();
@@ -418,11 +424,7 @@ namespace PT1
 
             int allocationId = Int32.Parse(allocationDataID.Replace(allocationID, ""));
             string allocationMap = allocationDataMap.Replace(allocationMAP, "");
-            //Allocation[] allocations = new Allocation[totalAllocations];
             Allocation allocation = new Allocation();
-
-            //this.allocationList = new Allocation[totalAllocations];
-
 
             if (allocationId < totalAllocations)
             {
@@ -476,7 +478,6 @@ namespace PT1
             Console.WriteLine("Current Index: " + index);
             return index;
         }
-    
     
     }
 }
