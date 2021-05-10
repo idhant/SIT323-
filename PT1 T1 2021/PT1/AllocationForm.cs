@@ -241,12 +241,12 @@ namespace PT1
 
                         if (maxRamRequired[processor] > processorRamAvailable[processor])
                         {
-                            Console.WriteLine("Not enough ram available on the processor- " + processor + "to complete the task, Allocation- " + allocationID + "is invalid. \n");
+                            Console.WriteLine("Not enough ram available on the processor- " + processor + " to complete the task, Allocation- " + allocationID + " is invalid. \n");
                             //add to erros
                         }
                         else
                         {
-                            Console.WriteLine("Ram is available on the processor- " + processor + " to complete all the assigned tasks. \n");
+                            Console.WriteLine("Ram is available on the processor- " + processor + " to complete all the assigned tasks, Allocation= " + allocationID + " is valid." + "\n");
                         }
                     }                    
 
@@ -256,6 +256,166 @@ namespace PT1
             }
 
             Console.WriteLine("Ending the Validation of ram of tasks \n");
+
+            Console.WriteLine("Starting the Validation of Download speeds of tasks \n");
+
+            foreach (Allocation allocation in allocationList)
+            {
+                Console.WriteLine("\n");
+                int allocationID = allocation.getAllocationID();
+                int[,] allocationMap = allocation.getAllocationMap();
+                Console.WriteLine("Checking the Download Speeds for allocation- " + allocationID);
+
+                int[] maxDownloadRequired = new int[taskAllocations.getTotalProcessors()];
+                int[] processorDownloadAvailable = new int[taskAllocations.getTotalProcessors()];
+
+                for (int processor = 0; processor < taskAllocations.getTotalProcessors(); processor++)
+                {
+                    for (int task = 0; task < taskAllocations.getTotalTasks(); task++)
+                    {
+                        int value = allocationMap[processor, task];
+                        int taskDownload = 0;
+                        int processorDownload = 0;
+
+                        if (value == 1)
+                        {
+                            Console.WriteLine("Processor: " + processor + " is assigned the task: " + task);
+                            List<Task> tasksList = configuration.getTasksList();
+
+                            foreach (Task taskNumber in tasksList)
+                            {
+                                if (taskNumber.getTaskID() == task)
+                                {
+                                    taskDownload = taskNumber.getTaskDownload();
+                                }
+                            }
+
+                            List<Processor> processorsList = configuration.getProcessorsList();
+
+                            foreach (Processor processorNumber in processorsList)
+                            {
+                                if (processorNumber.getProcessorID() == processor)
+                                {
+                                    processorDownload = processorNumber.getProcessorDownload();
+                                }
+                            }
+                        }
+
+                        if (taskDownload != 0)
+                        {
+                            Console.WriteLine("Download Speed required for Task- " + task + " is: " + taskDownload + "\n");
+                            if (taskDownload > maxDownloadRequired[processor])
+                            {
+                                maxDownloadRequired[processor] = taskDownload;
+                            }
+                            processorDownloadAvailable[processor] = processorDownload;
+                        }
+                    }
+                }
+
+                for (int processor = 0; processor < maxDownloadRequired.Length; processor++)
+                {
+                    if (processorDownloadAvailable[processor] > 0)
+                    {
+                        Console.WriteLine("Processor- " + processor);
+                        Console.WriteLine("Download speed Available: " + processorDownloadAvailable[processor]);
+                        Console.WriteLine("Maximum download speed Required by any task: " + maxDownloadRequired[processor]);
+
+                        if (maxDownloadRequired[processor] > processorDownloadAvailable[processor])
+                        {
+                            Console.WriteLine("Not enough download speed available on the processor- " + processor + " to complete the task, Allocation- " + allocationID + " is invalid. \n");
+                            //add to erros
+                        }
+                        else
+                        {
+                            Console.WriteLine("Download speed is available on the processor- " + processor + " to complete all the assigned tasks, Allocation= " + allocationID + " is valid." + "\n");
+                        }
+                    }
+
+                }
+            }
+
+            Console.WriteLine("Ending the Validation of Download speeds of tasks \n");
+
+            Console.WriteLine("Starting the Validation of Upload speeds of tasks \n");
+
+            foreach (Allocation allocation in allocationList)
+            {
+                Console.WriteLine("\n");
+                int allocationID = allocation.getAllocationID();
+                int[,] allocationMap = allocation.getAllocationMap();
+                Console.WriteLine("Checking the Upload speeds for allocation- " + allocationID);
+
+                int[] maxUploadRequired = new int[taskAllocations.getTotalProcessors()];
+                int[] processorUploadAvailable = new int[taskAllocations.getTotalProcessors()];
+
+                for (int processor = 0; processor < taskAllocations.getTotalProcessors(); processor++)
+                {
+                    for (int task = 0; task < taskAllocations.getTotalTasks(); task++)
+                    {
+                        int value = allocationMap[processor, task];
+                        int taskUpload = 0;
+                        int processorUpload = 0;
+
+                        if (value == 1)
+                        {
+                            Console.WriteLine("Processor: " + processor + " is assigned the task: " + task);
+                            List<Task> tasksList = configuration.getTasksList();
+
+                            foreach (Task taskNumber in tasksList)
+                            {
+                                if (taskNumber.getTaskID() == task)
+                                {
+                                    taskUpload = taskNumber.getTaskUpload();
+                                }
+                            }
+
+                            List<Processor> processorsList = configuration.getProcessorsList();
+
+                            foreach (Processor processorNumber in processorsList)
+                            {
+                                if (processorNumber.getProcessorID() == processor)
+                                {
+                                    processorUpload = processorNumber.getProcessorUpload();
+                                }
+                            }
+                        }
+
+                        if (taskUpload != 0)
+                        {
+                            Console.WriteLine("Upload Speed required for Task- " + task + " is: " + taskUpload + "\n");
+                            if (taskUpload > maxUploadRequired[processor])
+                            {
+                                maxUploadRequired[processor] = taskUpload;
+                            }
+                            processorUploadAvailable[processor] = processorUpload;
+                        }
+                    }
+                }
+
+                for (int processor = 0; processor < maxUploadRequired.Length; processor++)
+                {
+                    if (processorUploadAvailable[processor] > 0)
+                    {
+                        Console.WriteLine("Processor- " + processor);
+                        Console.WriteLine("Upload speed Available: " + processorUploadAvailable[processor]);
+                        Console.WriteLine("Maximum upload speed Required by any task: " + maxUploadRequired[processor]);
+
+                        if (maxUploadRequired[processor] > processorUploadAvailable[processor])
+                        {
+                            Console.WriteLine("Not enough upload speed available on the processor- " + processor + " to complete the task, Allocation- " + allocationID + " is invalid. \n");
+                            //add to erros
+                        }
+                        else
+                        {
+                            Console.WriteLine("Upload speed is available on the processor- " + processor + " to complete all the assigned tasks, Allocation= " + allocationID + " is valid." + "\n");
+                        }
+                    }
+
+                }
+            }
+
+            Console.WriteLine("Ending the Validation of Upload speeds of tasks \n");
         }
 
     }
