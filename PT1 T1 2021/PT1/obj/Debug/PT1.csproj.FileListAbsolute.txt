@@ -7,4 +7,5 @@ D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.csproj.GenerateResource.ca
 D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.csproj.CoreCompileInputs.cache
 D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.exe
 D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.pdb
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.MainForm.resources
 D:\Idhant\SIT323\SIT323\PT1 T1 2021\PT1\obj\Debug\PT1.AllocationForm.resources

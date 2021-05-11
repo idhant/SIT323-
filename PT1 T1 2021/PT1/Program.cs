@@ -17,7 +17,7 @@ namespace PT1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AllocationForm());
+            Application.Run(new MainForm());
         }
 
 
