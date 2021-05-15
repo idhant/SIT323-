@@ -53,6 +53,7 @@
     <Compile Include="AllocationForm.Designer.cs">
       <DependentUpon>AllocationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Energy.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="ProcessorType.cs" />
     <Compile Include="Task.cs" />

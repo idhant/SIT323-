@@ -31,12 +31,17 @@ namespace PT1
 
             OpenFileDialog theDialog = new OpenFileDialog();
             theDialog.Title = "Open TAFF File";
-            //theDialog.Filter = "TXT files|*.txt";
+            theDialog.Filter = "TAFF files|*.taff";
             theDialog.InitialDirectory = @"C:\";
             if (theDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
+                    allocationDetails.Text = "";
+                    errorBox.Text = "";
+                    TaffFile.Text = "";
+                    CffFile.Text = "";
+
                     string filename = theDialog.FileName;
 
                     taskAllocations.StoreTAFFLines(filename);
@@ -71,22 +76,35 @@ namespace PT1
                 Console.WriteLine("Both taff and cff files are valid. You can now check the validations of the allocations.");
                 TaffFileName.Text = "Taff File (Valid)";
                 CffFileName.Text = "Cff File (Valid)";
-                TaffFileName.ForeColor = Color.Green;
-                CffFileName.ForeColor = Color.Green;
+                TaffFileName.BackColor = Color.Green;
+                CffFileName.BackColor = Color.Green;
                 allocationsToolStripMenuItem.Enabled = true;
+                errorsHeading.BackColor = Color.Green;
+                errorBox.Text = "";
+                errorBox.AppendText("TAFF File" + Environment.NewLine);
+                errorBox.AppendText("The TAFF file is Valid, No errors to display." + Environment.NewLine);
+                errorBox.AppendText("END of TAFF File" + Environment.NewLine);
+                errorBox.AppendText(Environment.NewLine);
+                errorBox.AppendText("CFF File" + Environment.NewLine);
+                errorBox.AppendText("The CFF file is Valid, No errors to display." + Environment.NewLine);
+                errorBox.AppendText("END of CFF File" + Environment.NewLine);
             }
 
             else
             {
+                errorBox.Text = "";
                 if (!taskAllocations.getIsValid())
                 {
+                    TaffFileName.BackColor = Color.Red;
                     TaffFileName.Text = "Taff File (Invalid)";
-                    TaffFileName.ForeColor = Color.Red;
+                    taskAllocations.PrintErrorDetails(errorBox, errorsHeading);
                 }
                 if (!configuration.getIsValid())
                 {
                     CffFileName.Text = "Cff File (Invalid)";
-                    CffFileName.ForeColor = Color.Red;
+                    CffFileName.BackColor = Color.Red;
+                    errorBox.AppendText(Environment.NewLine);
+                    configuration.PrintErrorDetails(errorBox, errorsHeading);
                 }
             }
         }
@@ -358,7 +376,7 @@ namespace PT1
                             allocationDetails.AppendText("Processor- " + processor);
                             allocationDetails.AppendText(Environment.NewLine);
                             allocationDetails.AppendText("Maximum Required Upload Speed: " + maxUploadRequired[processor] + Environment.NewLine);
-                            allocationDetails.AppendText("Available Download Speed: " + processorUploadAvailable[processor] + Environment.NewLine);
+                            allocationDetails.AppendText("Available Upload Speed: " + processorUploadAvailable[processor] + Environment.NewLine);
 
                         }
                         else
@@ -367,7 +385,7 @@ namespace PT1
                             allocationDetails.AppendText("Processor- " + processor);
                             allocationDetails.AppendText(Environment.NewLine);
                             allocationDetails.AppendText("Maximum Required Upload Speed: " + maxUploadRequired[processor] + Environment.NewLine);
-                            allocationDetails.AppendText("Available Download Speed: " + processorUploadAvailable[processor] + Environment.NewLine);
+                            allocationDetails.AppendText("Available Upload Speed: " + processorUploadAvailable[processor] + Environment.NewLine);
                         }
                     }
 
@@ -380,23 +398,48 @@ namespace PT1
 
             bool valid = true;
 
+            errorBox.AppendText(Environment.NewLine);
+            errorBox.AppendText("START of Allocations" + Environment.NewLine);
+
             foreach (Allocation allocation in allocationList)
-            { 
+            {
                 if (!allocation.isIsValid())
-                { 
+                {
+                    Console.WriteLine("Allocation- " + allocation.getAllocationID() + " is invalid.");
+                    Console.WriteLine("Number of allocation errors found: " + allocation.getErrors() + " .");
+                    Console.WriteLine("Errors are as follows: \n ");
+                    errorBox.AppendText("Allocation- " + allocation.getAllocationID() + " is invalid." + Environment.NewLine);
+                    errorBox.AppendText("Number of allocation errors found: " + allocation.getErrors() + " ." + Environment.NewLine);
+                    errorBox.AppendText("Errors are as follows: " + Environment.NewLine);
+
+                    int errCount = 1;
+
+                    foreach (string error in allocation.getErrorList())
+                    {
+                        Console.WriteLine("Error- " + errCount + " : " + error);
+                        errorBox.AppendText("Error- " + errCount + " : " + error + Environment.NewLine);
+                        errCount++;
+                    }
+
+                    errorBox.AppendText("END of Allocation- " + allocation.getAllocationID() + " ."+ Environment.NewLine);
+                    errorBox.AppendText(Environment.NewLine);
                     valid = false;
                 }
                 else
                 {
-
-         
+                    Console.WriteLine("Allocation- " + allocation.getAllocationID() + " is valid.");
+                    errorBox.AppendText("Allocation- " + allocation.getAllocationID() + " is valid." + Environment.NewLine);
+                    errorBox.AppendText("END of Allocation- " + allocation.getAllocationID() + " ." + Environment.NewLine);
+                    errorBox.AppendText(Environment.NewLine);
                 }
             }
 
-            if(!valid)
+            errorBox.AppendText("END of Allocations" + Environment.NewLine);
+
+            if (!valid)
             {
                 Console.WriteLine("Some allocations are invalid.");
-                allocationsHeading.ForeColor = Color.Red;
+                allocationsHeading.BackColor = Color.Red;
                 allocationsHeading.Text = "Allocations (Invalid)";
                 Console.WriteLine("Some allocations are Invalid. \n");
             }
@@ -404,371 +447,11 @@ namespace PT1
             else
             {
                 Console.WriteLine("All allocations are valid.");
-                allocationsHeading.ForeColor = Color.Green;
+                allocationsHeading.BackColor = Color.Green;
                 allocationsHeading.Text = "Allocations (Valid)";
                 Console.WriteLine("Allocations are valid. \n");
             }
-
+            
         }
     }
 }
-
-
-/*
-foreach (Allocation allocation in allocationList)
-{
-    Console.WriteLine("\n");
-    int allocationID = allocation.getAllocationID();
-    int[,] allocationMap = allocation.getAllocationMap();
-    Console.WriteLine("Checking the Ram for allocation- " + allocationID);
-
-    int[] maxRamRequired = new int[taskAllocations.getTotalProcessors()];
-    int[] processorRamAvailable = new int[taskAllocations.getTotalProcessors()];
-
-    for (int processor = 0; processor < taskAllocations.getTotalProcessors(); processor++)
-    {
-        for (int task = 0; task < taskAllocations.getTotalTasks(); task++)
-        {
-            int value = allocationMap[processor, task];
-            int taskRam = 0;
-            int processorRam = 0;
-
-            if (value == 1)
-            {
-                Console.WriteLine("Processor: " + processor + " is assigned the task: " + task);
-                List<Task> tasksList = configuration.getTasksList();
-
-                foreach (Task taskNumber in tasksList)
-                {
-                    if (taskNumber.getTaskID() == task)
-                    {
-                        taskRam = taskNumber.getTaskRam();
-                    }
-                }
-
-                List<Processor> processorsList = configuration.getProcessorsList();
-
-                foreach (Processor processorNumber in processorsList)
-                {
-                    if (processorNumber.getProcessorID() == processor)
-                    {
-                        processorRam = processorNumber.getProcessorRam();
-                    }
-                }
-            }
-
-            if (taskRam != 0)
-            {
-                Console.WriteLine("Ram required for Task- " + task + " is: " + taskRam + "\n");
-                if (taskRam > maxRamRequired[processor])
-                {
-                    maxRamRequired[processor] = taskRam;
-                }
-                processorRamAvailable[processor] = processorRam;
-            }
-
-        }
-    }
-
-    for (int processor = 0; processor < maxRamRequired.Length; processor++)
-    {
-        if (processorRamAvailable[processor] > 0)
-        {
-            Console.WriteLine("Processor- " + processor);
-            Console.WriteLine("Ram Available: " + processorRamAvailable[processor]);
-            Console.WriteLine("Maximum Ram Required by any task: " + maxRamRequired[processor]);
-
-            if (maxRamRequired[processor] > processorRamAvailable[processor])
-            {
-                Console.WriteLine("Not enough ram available on the processor- " + processor + " to complete the task, Allocation- " + allocationID + " is invalid. \n");
-
-                //add to erros
-            }
-            else
-            {
-                allocationDetails.AppendText("Required Ram: " + maxRamRequired[processor] + Environment.NewLine);
-                allocationDetails.AppendText("Available Ram: " + processorRamAvailable[processor] + Environment.NewLine);
-                Console.WriteLine("Ram is available on the processor- " + processor + " to complete all the assigned tasks, Allocation= " + allocationID + " is valid." + "\n");
-            }
-        }
-
-    }
-}
-*/
-
-/*
-
-foreach (Allocation allocation in allocationList)
-{
-   Console.WriteLine("\n");
-   int allocationID = allocation.getAllocationID();
-   int[,] allocationMap = allocation.getAllocationMap();
-   Console.WriteLine("Checking the Download Speeds for allocation- " + allocationID);
-
-   int[] maxDownloadRequired = new int[taskAllocations.getTotalProcessors()];
-   int[] processorDownloadAvailable = new int[taskAllocations.getTotalProcessors()];
-
-   for (int processor = 0; processor < taskAllocations.getTotalProcessors(); processor++)
-   {
-       for (int task = 0; task < taskAllocations.getTotalTasks(); task++)
-       {
-           int value = allocationMap[processor, task];
-           int taskDownload = 0;
-           int processorDownload = 0;
-
-           if (value == 1)
-           {
-               Console.WriteLine("Processor: " + processor + " is assigned the task: " + task);
-               List<Task> tasksList = configuration.getTasksList();
-
-               foreach (Task taskNumber in tasksList)
-               {
-                   if (taskNumber.getTaskID() == task)
-                   {
-                       taskDownload = taskNumber.getTaskDownload();
-                   }
-               }
-
-               List<Processor> processorsList = configuration.getProcessorsList();
-
-               foreach (Processor processorNumber in processorsList)
-               {
-                   if (processorNumber.getProcessorID() == processor)
-                   {
-                       processorDownload = processorNumber.getProcessorDownload();
-                   }
-               }
-           }
-
-           if (taskDownload != 0)
-           {
-               Console.WriteLine("Download Speed required for Task- " + task + " is: " + taskDownload + "\n");
-               if (taskDownload > maxDownloadRequired[processor])
-               {
-                   maxDownloadRequired[processor] = taskDownload;
-               }
-               processorDownloadAvailable[processor] = processorDownload;
-           }
-       }
-   }
-
-   for (int processor = 0; processor < maxDownloadRequired.Length; processor++)
-   {
-       if (processorDownloadAvailable[processor] > 0)
-       {
-           Console.WriteLine("Processor- " + processor);
-           Console.WriteLine("Download speed Available: " + processorDownloadAvailable[processor]);
-           Console.WriteLine("Maximum download speed Required by any task: " + maxDownloadRequired[processor]);
-
-           if (maxDownloadRequired[processor] > processorDownloadAvailable[processor])
-           {
-               Console.WriteLine("Not enough download speed available on the processor- " + processor + " to complete the task, Allocation- " + allocationID + " is invalid. \n");
-               //add to erros
-           }
-           else
-           {
-               Console.WriteLine("Download speed is available on the processor- " + processor + " to complete all the assigned tasks, Allocation= " + allocationID + " is valid." + "\n");
-           }
-       }
-
-   }
-}
-
-foreach (Allocation allocation in allocationList)
-{
-   Console.WriteLine("\n");
-   int allocationID = allocation.getAllocationID();
-   int[,] allocationMap = allocation.getAllocationMap();
-   Console.WriteLine("Checking the Upload speeds for allocation- " + allocationID);
-
-   int[] maxUploadRequired = new int[taskAllocations.getTotalProcessors()];
-   int[] processorUploadAvailable = new int[taskAllocations.getTotalProcessors()];
-
-   for (int processor = 0; processor < taskAllocations.getTotalProcessors(); processor++)
-   {
-       for (int task = 0; task < taskAllocations.getTotalTasks(); task++)
-       {
-           int value = allocationMap[processor, task];
-           int taskUpload = 0;
-           int processorUpload = 0;
-
-           if (value == 1)
-           {
-               Console.WriteLine("Processor: " + processor + " is assigned the task: " + task);
-               List<Task> tasksList = configuration.getTasksList();
-
-               foreach (Task taskNumber in tasksList)
-               {
-                   if (taskNumber.getTaskID() == task)
-                   {
-                       taskUpload = taskNumber.getTaskUpload();
-                   }
-               }
-
-               List<Processor> processorsList = configuration.getProcessorsList();
-
-               foreach (Processor processorNumber in processorsList)
-               {
-                   if (processorNumber.getProcessorID() == processor)
-                   {
-                       processorUpload = processorNumber.getProcessorUpload();
-                   }
-               }
-           }
-
-           if (taskUpload != 0)
-           {
-               Console.WriteLine("Upload Speed required for Task- " + task + " is: " + taskUpload + "\n");
-               if (taskUpload > maxUploadRequired[processor])
-               {
-                   maxUploadRequired[processor] = taskUpload;
-               }
-               processorUploadAvailable[processor] = processorUpload;
-           }
-       }
-   }
-
-   for (int processor = 0; processor < maxUploadRequired.Length; processor++)
-   {
-       if (processorUploadAvailable[processor] > 0)
-       {
-           Console.WriteLine("Processor- " + processor);
-           Console.WriteLine("Upload speed Available: " + processorUploadAvailable[processor]);
-           Console.WriteLine("Maximum upload speed Required by any task: " + maxUploadRequired[processor]);
-
-           if (maxUploadRequired[processor] > processorUploadAvailable[processor])
-           {
-               Console.WriteLine("Not enough upload speed available on the processor- " + processor + " to complete the task, Allocation- " + allocationID + " is invalid. \n");
-               //add to erros
-           }
-           else
-           {
-               Console.WriteLine("Upload speed is available on the processor- " + processor + " to complete all the assigned tasks, Allocation= " + allocationID + " is valid." + "\n");
-           }
-       }
-
-   }
-}
-
-/*
-
-Console.WriteLine("Finished validating the allocations.");
-Console.WriteLine("Allocations are valid. \n");
-}
-
-}
-}
-
-// Console.WriteLine("Starting Validating the runtime of tasks.. \n");
-
-//Console.WriteLine("Ending the Validation of the runtime of tasks.. \n");
-
-//Console.WriteLine("Starting the Validation of ram of tasks \n");
-
-//Console.WriteLine("Ending the Validation of ram of tasks \n");
-
-//Console.WriteLine("Starting the Validation of Download speeds of tasks \n");
-
-//Console.WriteLine("Ending the Validation of Download speeds of tasks \n");
-
-//Console.WriteLine("Starting the Validation of Upload speeds of tasks \n");
-
-//Console.WriteLine("Ending the Validation of Upload speeds of tasks \n");
-/*
-foreach (Allocation allocation in allocationList)
-{
-   int allocationID = allocation.getAllocationID();
-   int[,] allocationMap = allocation.getAllocationMap();
-
-   allocationDetails.AppendText("Allocation ID: " + allocationID + Environment.NewLine);
-   allocationDetails.AppendText("Allocation Map:" + Environment.NewLine);
-
-   float[] processorRuntime = new float[taskAllocations.getTotalProcessors()];
-   float maximumAllocationRuntime = 0;
-   float allowedProgramDuration = configuration.getProgramDuration();
-
-   for (int processor = 0; processor < taskAllocations.getTotalProcessors(); processor++)
-   {
-       allocationDetails.AppendText(Environment.NewLine);
-       //allocationDetails.AppendText("Processor- " + processor);
-       for (int task = 0; task < taskAllocations.getTotalTasks(); task++)
-       {
-           int value = allocationMap[processor, task];
-           float taskRuntime = 0;
-           float taskRefFrequency = 0;
-           float processorFrequency = 0;
-           float actualTaskRuntime = 0;
-
-           //allocationDetails.AppendText("Task- " + task + " = " + value);
-           allocationDetails.AppendText("" + value + ", ");
-
-           if (value == 1)
-           {
-               //allocationDetails.AppendText("Processor- " + processor + " is assigned the task- " + task);
-               Console.WriteLine("Processor- " + processor + " is assigned the task- " + task);
-
-               List<Task> tasksList = configuration.getTasksList();
-
-               foreach (Task taskNumber in tasksList)
-               {
-                   if (taskNumber.getTaskID() == task)
-                   {
-                       taskRuntime = taskNumber.getTaskRuntime();
-                       taskRefFrequency = taskNumber.getTaskReferenceFrequency();
-                   }
-               }
-
-               List<Processor> processorsList = configuration.getProcessorsList();
-
-               foreach (Processor processorNumber in processorsList)
-               {
-                   if (processorNumber.getProcessorID() == processor)
-                   {
-                       processorFrequency = processorNumber.getProcessorFrequency();
-                   }
-               }
-
-           }
-
-           if (processorFrequency != 0)
-           {
-               actualTaskRuntime = taskRuntime * (taskRefFrequency / processorFrequency);
-               processorRuntime[processor] = actualTaskRuntime + processorRuntime[processor];
-               Console.WriteLine("Actual Task runtime for Task: " + task + " on processor: " + processor + " is: " + actualTaskRuntime);
-           }
-           // can insert some verification code here to check that the task is only assigned to one processor
-       }
-       Console.WriteLine("Total runtime for processor- " + processor + " = " + processorRuntime[processor]);
-   }
-   allocationDetails.AppendText(Environment.NewLine);
-
-   foreach (float runtime in processorRuntime)
-   {
-       if (runtime > maximumAllocationRuntime)
-       {
-           maximumAllocationRuntime = runtime;
-       }
-   }
-
-
-   Console.WriteLine("Maximum Runtime of any processor is: " + maximumAllocationRuntime);
-   Console.WriteLine("Allowed Maximum Runtime: " + allowedProgramDuration);
-
-   allocationDetails.AppendText(Environment.NewLine);
-   if (allowedProgramDuration > maximumAllocationRuntime)
-   {
-       allocationDetails.AppendText("Allocation Runtime: " + maximumAllocationRuntime + Environment.NewLine);
-       allocationDetails.AppendText("Maximum Acceptable Runtime: " + allowedProgramDuration + Environment.NewLine);
-       Console.WriteLine("Runtime of the allocation- " + allocationID + "is valid and is below the allowed duration of the program. \n");
-   }
-
-   else
-   {
-       // Add this allocation id in the error list
-       allocation.setIsValid(false);
-       allocation.setErrors(allocation.getErrors() + 1);
-       Console.WriteLine("Runtime of allocation- " + allocationID + "is invalid and exceeds the allowed duration of the program. \n");
-   }
-   allocationDetails.AppendText(Environment.NewLine);
-}
-*/

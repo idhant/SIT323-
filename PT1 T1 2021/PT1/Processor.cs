@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PT1
 {
-    class Processor
+    public class Processor
     {
         // Vars
         private int processorID;
@@ -77,10 +77,16 @@ namespace PT1
 			this.processorUpload = processorUpload;
 		}
 
-
+		// constructor
 		public Processor()
         {
 
         }
+
+		//Methods
+
+
+		//Test method
+
     }
 }

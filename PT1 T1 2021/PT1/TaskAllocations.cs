@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,7 +11,7 @@ using System.Windows.Forms;
 
 namespace PT1
 {
-    class TaskAllocations
+    public class TaskAllocations
     {
         // Vars
         private String[] taffFileLines;
@@ -35,14 +36,28 @@ namespace PT1
         //private Allocation[] allocationList;
 
         // Getters and Setters
+        public int getErrors()
+        {
+            return this.errors;
+        }
+
+        public void setErrors(int errors)
+        {
+            this.errors = errors;
+        }
+
+        public ArrayList getErrorList()
+        {
+            return this.errorList;
+        }
+
+        public void setErrorList(ArrayList errorList)
+        {
+            this.errorList = errorList;
+        }
         public List<Allocation> getAllocationList()
         {
             return this.allocationList;
-        }
-
-        public void setAllocationList(List<Allocation> allocationList)
-        {
-            this.allocationList = allocationList;
         }
 
         public bool getIsValid()
@@ -180,7 +195,7 @@ namespace PT1
             Console.WriteLine("TAFF File Data printed on screen.");
         }
 
-        public void ValidateTAFFFile(String[] filelines)
+        public bool ValidateTAFFFile(String[] filelines)
         {
             int index = 0;
             int errors = 0;
@@ -213,19 +228,19 @@ namespace PT1
 
                 if (trimmedline.Length == 0)
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : Empty Line -> Valid");
+                    //Console.WriteLine("Line: " + trimmedline + " : Empty Line -> Valid");
                 }
 
                 else if (comment.IsMatch(trimmedline))
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : Comment Line -> Valid");
+                    //Console.WriteLine("Line: " + trimmedline + " : Comment Line -> Valid");
                 }
 
                 else if (configurationData.IsMatch(trimmedline))
                 {
                     if (configurationDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-CONFIGURATION -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-CONFIGURATION -> Valid");
                     }
 
                     else
@@ -235,15 +250,15 @@ namespace PT1
 
                         if (CFFfilename.IsMatch(filename))
                         {
-                            Console.WriteLine("Line: " + trimmedline + " : CONFIGURATION -> Valid");
-                            Console.WriteLine("Line: " + filename + " : CONFIGURATION Block -> Valid");
+                            //Console.WriteLine("Line: " + trimmedline + " : CONFIGURATION -> Valid");
+                            //Console.WriteLine("Line: " + filename + " : CONFIGURATION Block -> Valid");
                         }
                         else
                         {
-                            Console.WriteLine("Line: " + trimmedline + " : CONFIGURATION Block -> Invalid");
+                            //Console.WriteLine("Line: " + trimmedline + " : CONFIGURATION Block -> Invalid");
                             errors++;
                             errorList.Add(trimmedline);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
                     }
                 }
@@ -252,7 +267,7 @@ namespace PT1
                 {
                     if (allocationsDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-ALLOCATIONS -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-ALLOCATIONS -> Valid");
                     }
 
                     else
@@ -266,9 +281,9 @@ namespace PT1
 
                         if (allocationsDataCount.IsMatch(allocationCount) && allocationsDataTasks.IsMatch(taskCount) && allocationsDataProcessors.IsMatch(processorCount))
                         {
-                            Console.WriteLine("Line: " + allocationCount + " : ALLOCATIONS CONFIG Block -> Valid");
-                            Console.WriteLine("Line: " + taskCount + " : ALLOCATIONS CONFIG Block -> Valid");
-                            Console.WriteLine("Line: " + processorCount + " : ALLOCATIONS CONFIG Block -> Valid");
+                            //Console.WriteLine("Line: " + allocationCount + " : ALLOCATIONS CONFIG Block -> Valid");
+                            //Console.WriteLine("Line: " + taskCount + " : ALLOCATIONS CONFIG Block -> Valid");
+                            //Console.WriteLine("Line: " + processorCount + " : ALLOCATIONS CONFIG Block -> Valid");
                             RetrieveAllocationsDetails(allocationCount, taskCount, processorCount);
                         }
 
@@ -276,24 +291,24 @@ namespace PT1
                         {
                             if (!allocationsDataCount.IsMatch(allocationCount))
                             {
-                                Console.WriteLine("Line: " + allocationCount + " : ALLOCATIONS CONFIG Block -> Invalid");
+                                //Console.WriteLine("Line: " + allocationCount + " : ALLOCATIONS CONFIG Block -> Invalid");
                                 errors++;
                                 errorList.Add(allocationCount);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!allocationsDataTasks.IsMatch(taskCount))
                             {
-                                Console.WriteLine("Line: " + taskCount + " : ALLOCATIONS CONFIG Block -> Valid");
+                                //Console.WriteLine("Line: " + taskCount + " : ALLOCATIONS CONFIG Block -> Valid");
                                 errors++;
                                 errorList.Add(taskCount);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!allocationsDataProcessors.IsMatch(processorCount))
                             {
-                                Console.WriteLine("Line: " + processorCount + " : ALLOCATIONS CONFIG Block -> Valid");
+                                //Console.WriteLine("Line: " + processorCount + " : ALLOCATIONS CONFIG Block -> Valid");
                                 errors++;
                                 errorList.Add(processorCount);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                         }
                     }
@@ -304,7 +319,7 @@ namespace PT1
                 {
                     if (allocationDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-ALLOCATION -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-ALLOCATION -> Valid");
                     }
 
                     else
@@ -316,8 +331,8 @@ namespace PT1
 
                         if (allocationDataID.IsMatch(allocationID) && allocationDataMap.IsMatch(allocationMAP))
                         {
-                            Console.WriteLine("Line: " + allocationID + " : ALLOCATION CONFIG Block -> Valid");
-                            Console.WriteLine("Line: " + allocationMAP + " : ALLOCATION CONFIG Block -> Valid");
+                            //Console.WriteLine("Line: " + allocationID + " : ALLOCATION CONFIG Block -> Valid");
+                            //Console.WriteLine("Line: " + allocationMAP + " : ALLOCATION CONFIG Block -> Valid");
                             this.allocationList.Add(RetrieveAllocationDetail(allocationID, allocationMAP));
                             
                         }
@@ -326,17 +341,17 @@ namespace PT1
                         {
                             if (!allocationDataID.IsMatch(allocationID))
                             {
-                                Console.WriteLine("Line: " + allocationID + " : ALLOCATION CONFIG Block -> Invalid");
+                                //Console.WriteLine("Line: " + allocationID + " : ALLOCATION CONFIG Block -> Invalid");
                                 errors++;
                                 errorList.Add(allocationID);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!allocationDataMap.IsMatch(allocationMAP))
                             {
-                                Console.WriteLine("Line: " + allocationMAP + " : ALLOCATION CONFIG Block -> Invalid");
+                                //Console.WriteLine("Line: " + allocationMAP + " : ALLOCATION CONFIG Block -> Invalid");
                                 errors++;
                                 errorList.Add(allocationMAP);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                         }
                     }
@@ -345,10 +360,10 @@ namespace PT1
 
                 else
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match TAFF Syntax -> Invalid");
+                    //Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match TAFF Syntax -> Invalid");
                     errors++;
                     errorList.Add(trimmedline);
-                    Console.WriteLine("Errors Found: " + errors + " .");
+                    //Console.WriteLine("Errors Found: " + errors + " .");
                 }
 
                 // increement 1 index after each line check
@@ -374,6 +389,7 @@ namespace PT1
                 }
                 this.errors = errors;
                 this.errorList = errorList;
+                return false;
             }
 
             else
@@ -394,7 +410,8 @@ namespace PT1
                     Console.WriteLine("Allocation ID: " + allocation.getAllocationID());
                     allocation.ReadAllocationMap(totalProcessors, totalTasks);
                 }
-                    
+
+                return true;
             }
 
         }
@@ -412,9 +429,9 @@ namespace PT1
             //this.allocationList = new Allocation[totalAllocations];
             //this.allocationList = new Allocation[totalAllocations];
 
-            Console.WriteLine("TotalAllocations: " + this.totalAllocations + "\n");
-            Console.WriteLine("TotalTasks: " + this.totalTasks + "\n");
-            Console.WriteLine("TotalProcessors: " + this.totalProcessors + "\n");
+            //Console.WriteLine("TotalAllocations: " + this.totalAllocations + "\n");
+            //Console.WriteLine("TotalTasks: " + this.totalTasks + "\n");
+            //Console.WriteLine("TotalProcessors: " + this.totalProcessors + "\n");
         }
 
         public Allocation RetrieveAllocationDetail(string allocationID, string allocationMAP)
@@ -452,16 +469,16 @@ namespace PT1
                     processorTaskSet[processor] = firstTaskSetRegex.Replace(allocationMap, "");
                     for (int task = 0; task < totalTasks; task++)
                     {
-                        Console.WriteLine("Processor task Set String before: " + processorTaskSet[processor]);
+                        //Console.WriteLine("Processor task Set String before: " + processorTaskSet[processor]);
                         taskSet[task] = Int32.Parse(firstTaskRegex.Replace(processorTaskSet[processor], ""));
-                        Console.WriteLine("Processor: " + processor + " , Task Number: " + task + " , Assignment:  " + taskSet[task]);
+                        //Console.WriteLine("Processor: " + processor + " , Task Number: " + task + " , Assignment:  " + taskSet[task]);
                         allocationMatrix[processor, task] = taskSet[task];
                         processorTaskSet[processor] = firstTaskRemovalRegex.Replace(processorTaskSet[processor], "");
-                        Console.WriteLine("Processor task Set String after: " + processorTaskSet[processor]);
+                        //Console.WriteLine("Processor task Set String after: " + processorTaskSet[processor]);
                     }
-                    Console.WriteLine("Allocation Map String, before the set removal: " + allocationMap);
+                    //Console.WriteLine("Allocation Map String, before the set removal: " + allocationMap);
                     allocationMap = firstTaskSetRemovalRegex.Replace(allocationMap, "");
-                    Console.WriteLine("Allocation Map String, after the set removal: " + allocationMap);
+                    //Console.WriteLine("Allocation Map String, after the set removal: " + allocationMap);
                 }
                 //this.allocationList[allocationId].setAllocationMap(allocationMatrix);
                 //allocations[allocationId].setAllocationMap(allocationMatrix);
@@ -475,9 +492,41 @@ namespace PT1
         public int IncrementIndex(int index, int number)
         {
             index = index + number;
-            Console.WriteLine("Current Index: " + index);
+            //Console.WriteLine("Current Index: " + index);
             return index;
         }
-    
+
+        public void PrintErrorDetails(TextBox textBox, TextBox textHeading)
+        {
+            if (errors > 0)
+            {
+                textHeading.BackColor = Color.Red;
+                textBox.AppendText("TAFF File" + Environment.NewLine);
+                Console.WriteLine("The TAFF file is invalid.");
+                Console.WriteLine("Number of syntax errors found: " + errors + " .");
+                Console.WriteLine("Errors are as follows: \n ");
+                textBox.AppendText("The TAFF file is invalid." + Environment.NewLine);
+                textBox.AppendText("Number of errors found: " + errors + " ." + Environment.NewLine);
+                textBox.AppendText("Errors are as follows: " + Environment.NewLine);
+
+                int errCount = 1;
+
+                foreach (string error in errorList)
+                {
+                    Console.WriteLine("Error- " + errCount + " : " + error);
+                    textBox.AppendText("Error- " + errCount + " : " + error + Environment.NewLine);
+                    errCount++;
+                }
+
+                textBox.AppendText("END of TAFF File" + Environment.NewLine);
+            }
+            else
+            {
+                textHeading.BackColor = Color.Green;
+                textBox.AppendText("TAFF File" + Environment.NewLine);
+                textBox.AppendText("The TAFF file is Valid, No errors to display." + Environment.NewLine);
+                textBox.AppendText("END of TAFF File" + Environment.NewLine);
+            }
+        }
     }
 }

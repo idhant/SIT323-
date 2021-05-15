@@ -1,0 +1,17 @@
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\obj\Debug\UnitTestProject1.csprojAssemblyReference.cache
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\obj\Debug\UnitTestProject1.csproj.CoreCompileInputs.cache
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\UnitTestProject1.dll
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\UnitTestProject1.pdb
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\PT1.exe
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\PT1.pdb
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\PT1.exe.config
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\obj\Debug\UnitTestProject1.csproj.CopyComplete
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\obj\Debug\UnitTestProject1.dll
+D:\Idhant\SIT323\SIT323\PT1 T1 2021\UnitTestProject1\obj\Debug\UnitTestProject1.pdb

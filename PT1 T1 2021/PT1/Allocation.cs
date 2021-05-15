@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PT1
 {
-    class Allocation
+    public class Allocation
     {
         private int allocationID;
         

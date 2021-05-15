@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,7 +11,7 @@ using System.Windows.Forms;
 
 namespace PT1
 {
-    class Configuration
+    public class Configuration
     {
         // array to store the filelines 
         private String[] cffFileLines;
@@ -21,7 +22,7 @@ namespace PT1
         private bool isValid;
 
         // Vars to store information retrieve from the file
-        private string fileName;
+        //private string fileName;
 
         //private int minimumTasks;
         //private int maximumTasks;
@@ -146,7 +147,7 @@ namespace PT1
             Console.WriteLine("CFF File Data printed on screen.");
         }
 
-        public void ValidateCFFFile(String[] filelines)
+        public bool ValidateCFFFile(String[] filelines)
         {
             int index = 0;
             errors = 0;
@@ -235,19 +236,19 @@ namespace PT1
 
                 if (trimmedline.Length == 0)
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : Empty Line -> Valid");
+                    //Console.WriteLine("Line: " + trimmedline + " : Empty Line -> Valid");
                 }
 
                 else if (comment.IsMatch(trimmedline))
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : Comment Line -> Valid");
+                    //Console.WriteLine("Line: " + trimmedline + " : Comment Line -> Valid");
                 }
 
                 else if (logfileData.IsMatch(trimmedline))
                 {
                     if (logfileDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-LOGFILE -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-LOGFILE -> Valid");
                     }
 
                     else
@@ -257,15 +258,15 @@ namespace PT1
 
                         if (logfileDataname.IsMatch(filename))
                         {
-                            Console.WriteLine("Line: " + trimmedline + " : LOGFILE -> Valid");
-                            Console.WriteLine("Line: " + filename + " : LOGFILE BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + trimmedline + " : LOGFILE -> Valid");
+                            //Console.WriteLine("Line: " + filename + " : LOGFILE BLOCK  -> Valid");
                         }
                         else
                         {
-                            Console.WriteLine("Line: " + trimmedline + " : LOGFILE BLOCK -> Invalid");
+                            //Console.WriteLine("Line: " + trimmedline + " : LOGFILE BLOCK -> Invalid");
                             errors++;
                             errorList.Add(trimmedline);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
                     }
                 }
@@ -274,7 +275,7 @@ namespace PT1
                 {
                     if (limitsDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-LOGFILE -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-LOGFILE -> Valid");
                     }
 
                     else
@@ -317,106 +318,106 @@ namespace PT1
                             && limitsDataMaximumDownload.IsMatch(maximumDownload)
                             && limitsDataMaximumUpload.IsMatch(maximumUpload))
                         {
-                            Console.WriteLine("Line: " + trimmedline + " : LIMITS -> Valid");
-                            Console.WriteLine("Line: " + minimumTasks + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + minimumProcessors + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + minimumProcessorFrequency + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + minimumRam + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + minimumDownload + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + minimumUpload + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + maximumTasks + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + maximumProcessors + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + maximumProcessorFrequency + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + maximumRam + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + maximumDownload + " : LIMITS BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + maximumUpload + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + trimmedline + " : LIMITS -> Valid");
+                            //Console.WriteLine("Line: " + minimumTasks + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + minimumProcessors + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + minimumProcessorFrequency + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + minimumRam + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + minimumDownload + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + minimumUpload + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + maximumTasks + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + maximumProcessors + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + maximumProcessorFrequency + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + maximumRam + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + maximumDownload + " : LIMITS BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + maximumUpload + " : LIMITS BLOCK  -> Valid");
                         }
 
                         else
                         {
                             if (!limitsDataMinimumTasks.IsMatch(minimumTasks))
                             {
-                                Console.WriteLine("Line: " + minimumTasks + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + minimumTasks + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(minimumTasks);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMinimumProcessors.IsMatch(minimumProcessors))
                             {
-                                Console.WriteLine("Line: " + minimumProcessors + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + minimumProcessors + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(minimumProcessors);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMinimumProcessorFrequency.IsMatch(minimumProcessorFrequency))
                             {
-                                Console.WriteLine("Line: " + minimumProcessorFrequency + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + minimumProcessorFrequency + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(minimumProcessorFrequency);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMinimumRam.IsMatch(minimumRam))
                             {
-                                Console.WriteLine("Line: " + minimumRam + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + minimumRam + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(minimumRam);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMinimumDownload.IsMatch(minimumDownload))
                             {
-                                Console.WriteLine("Line: " + minimumDownload + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + minimumDownload + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(minimumDownload);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMinimumUpload.IsMatch(minimumUpload))
                             {
-                                Console.WriteLine("Line: " + minimumUpload + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + minimumUpload + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(minimumUpload);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMaximumTasks.IsMatch(maximumTasks))
                             {
-                                Console.WriteLine("Line: " + maximumTasks + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + maximumTasks + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(maximumTasks);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMaximumProcessors.IsMatch(maximumProcessors))
                             {
-                                Console.WriteLine("Line: " + maximumProcessors + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + maximumProcessors + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(maximumProcessors);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMaximumProcessorFrequency.IsMatch(maximumProcessorFrequency))
                             {
-                                Console.WriteLine("Line: " + maximumProcessorFrequency + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + maximumProcessorFrequency + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(maximumProcessorFrequency);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMaximumRam.IsMatch(maximumRam))
                             {
-                                Console.WriteLine("Line: " + maximumRam + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + maximumRam + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(maximumRam);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMaximumDownload.IsMatch(maximumDownload))
                             {
-                                Console.WriteLine("Line: " + maximumDownload + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + maximumDownload + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(maximumDownload);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                             if (!limitsDataMaximumUpload.IsMatch(maximumUpload))
                             {
-                                Console.WriteLine("Line: " + maximumUpload + " : LIMITS BLOCK  -> Invalid");
+                                //Console.WriteLine("Line: " + maximumUpload + " : LIMITS BLOCK  -> Invalid");
                                 errors++;
                                 errorList.Add(maximumUpload);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                         }
                     }
@@ -426,7 +427,7 @@ namespace PT1
                 {
                     if (programDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-PROGRAM -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-PROGRAM -> Valid");
                     }
 
                     else
@@ -440,10 +441,10 @@ namespace PT1
 
                         if (programDataDuration.IsMatch(programDuration) && programDataTasks.IsMatch(programTasks) && programDataProcessors.IsMatch(programProcessors))
                         {
-                            Console.WriteLine("Line: " + trimmedline + " : PROGRAM -> Valid");
-                            Console.WriteLine("Line: " + programDuration + " : PROGRAM BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + programTasks + " : PROGRAM BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + programProcessors + " : PROGRAM BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + trimmedline + " : PROGRAM -> Valid");
+                            //Console.WriteLine("Line: " + programDuration + " : PROGRAM BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + programTasks + " : PROGRAM BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + programProcessors + " : PROGRAM BLOCK  -> Valid");
                             //RetrieveProgramDetails(programDuration, programTasks, programProcessors);
                             RetrieveProgramDetails(programDuration, programTasks, programProcessors);
                         }
@@ -452,26 +453,26 @@ namespace PT1
                         {
                             if (!programDataDuration.IsMatch(programDuration))
                             {
-                                Console.WriteLine("Line: " + programDataDuration + " : PROGRAM BLOCK  -> Valid");
+                                //Console.WriteLine("Line: " + programDataDuration + " : PROGRAM BLOCK  -> Valid");
                                 errors++;
                                 errorList.Add(programDataDuration);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
 
                             if (!programDataTasks.IsMatch(programTasks))
                             {
-                                Console.WriteLine("Line: " + programDataTasks + " : PROGRAM BLOCK  -> Valid");
+                                //Console.WriteLine("Line: " + programDataTasks + " : PROGRAM BLOCK  -> Valid");
                                 errors++;
                                 errorList.Add(programDataTasks);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
 
                             if (!programDataProcessors.IsMatch(programProcessors))
                             {
-                                Console.WriteLine("Line: " + programDataProcessors + " : PROGRAM BLOCK  -> Valid");
+                                //Console.WriteLine("Line: " + programDataProcessors + " : PROGRAM BLOCK  -> Valid");
                                 errors++;
                                 errorList.Add(programDataProcessors);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                         }
                     }
@@ -481,12 +482,12 @@ namespace PT1
                 {
                     if (tasksDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-TASKS -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-TASKS -> Valid");
                     }
 
                     else
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : TASKS -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : TASKS -> Valid");
                     }
                 }
 
@@ -513,13 +514,13 @@ namespace PT1
                         && taskDataDOWNLOAD.IsMatch(taskDownload)
                         && taskDataUPLOAD.IsMatch(taskUpload))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : TASK -> Valid");
-                        Console.WriteLine("Line: " + taskID + " : TASK BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + taskRuntime + " : TASK BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + taskReferenceFrequency + " : TASK BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + taskRam + " : TASK BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + taskDownload + " : TASK BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + taskUpload + " : TASK BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : TASK -> Valid");
+                        //Console.WriteLine("Line: " + taskID + " : TASK BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + taskRuntime + " : TASK BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + taskReferenceFrequency + " : TASK BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + taskRam + " : TASK BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + taskDownload + " : TASK BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + taskUpload + " : TASK BLOCK  -> Valid");
                         this.tasksList.Add(RetrieveTaskDetails(taskID, taskRuntime, taskReferenceFrequency, taskRam, taskDownload, taskUpload));
                     }
 
@@ -579,19 +580,19 @@ namespace PT1
 
                 else if (taskDataEndpoint.IsMatch(trimmedline))
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : END-TASK -> Valid");
+                    //Console.WriteLine("Line: " + trimmedline + " : END-TASK -> Valid");
                 }
 
                 else if (processorsData.IsMatch(trimmedline))
                 {
                     if (processorsDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-PROCESSORS -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-PROCESSORS -> Valid");
                     }
 
                     else
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : PROCESSORS -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : PROCESSORS -> Valid");
                     }
                 }
 
@@ -617,13 +618,13 @@ namespace PT1
                         && processorDataDOWNLOAD.IsMatch(processorDownload)
                         && processorDataUPLOAD.IsMatch(processorUpload))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : PROCESSOR -> Valid");
-                        Console.WriteLine("Line: " + processorID + " : PROCESSOR BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + processorType + " : PROCESSOR BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + processorFrequency + " : PROCESSOR BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + processorRam + " : PROCESSOR BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + processorDownload + " : PROCESSOR BLOCK  -> Valid");
-                        Console.WriteLine("Line: " + processorUpload + " : PROCESSOR BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : PROCESSOR -> Valid");
+                        //Console.WriteLine("Line: " + processorID + " : PROCESSOR BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + processorType + " : PROCESSOR BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + processorFrequency + " : PROCESSOR BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + processorRam + " : PROCESSOR BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + processorDownload + " : PROCESSOR BLOCK  -> Valid");
+                        //Console.WriteLine("Line: " + processorUpload + " : PROCESSOR BLOCK  -> Valid");
                         this.processorsList.Add(RetrieveProcessorDetails(processorID, processorType, processorFrequency, processorRam,  processorDownload, processorUpload));
                     }
 
@@ -631,50 +632,50 @@ namespace PT1
                     {
                         if (!processorDataID.IsMatch(processorID))
                         {
-                            Console.WriteLine("Line: " + processorID + " : PROCESSOR BLOCK  -> Invalid");
+                            //Console.WriteLine("Line: " + processorID + " : PROCESSOR BLOCK  -> Invalid");
                             errors++;
                             errorList.Add(processorID);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
 
                         if (!processorDataType.IsMatch(processorType))
                         {
-                            Console.WriteLine("Line: " + processorType + " : PROCESSOR BLOCK  -> Invalid");
+                            //Console.WriteLine("Line: " + processorType + " : PROCESSOR BLOCK  -> Invalid");
                             errors++;
                             errorList.Add(processorType);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
 
                         if (!processorDataFrequency.IsMatch(processorFrequency))
                         {
-                            Console.WriteLine("Line: " + processorFrequency + " : PROCESSOR BLOCK  -> Invalid");
+                            //Console.WriteLine("Line: " + processorFrequency + " : PROCESSOR BLOCK  -> Invalid");
                             errors++;
                             errorList.Add(processorFrequency);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
 
                         if (!processorDataRAM.IsMatch(processorRam))
                         {
-                            Console.WriteLine("Line: " + processorRam + " : PROCESSOR BLOCK  -> Invalid");
+                            //Console.WriteLine("Line: " + processorRam + " : PROCESSOR BLOCK  -> Invalid");
                             errors++;
                             errorList.Add(processorRam);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
 
                         if (!processorDataDOWNLOAD.IsMatch(processorDownload))
                         {
-                            Console.WriteLine("Line: " + processorDownload + " : PROCESSOR BLOCK  -> Invalid");
+                            //Console.WriteLine("Line: " + processorDownload + " : PROCESSOR BLOCK  -> Invalid");
                             errors++;
                             errorList.Add(processorDownload);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
 
                         if (!processorDataUPLOAD.IsMatch(processorUpload))
                         {
-                            Console.WriteLine("Line: " + processorUpload + " : PROCESSOR BLOCK  -> Invalid");
+                            //Console.WriteLine("Line: " + processorUpload + " : PROCESSOR BLOCK  -> Invalid");
                             errors++;
                             errorList.Add(processorUpload);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
 
                     }
@@ -683,19 +684,19 @@ namespace PT1
 
                 else if (processorDataEndpoint.IsMatch(trimmedline))
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR -> Valid");
+                    //Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR -> Valid");
                 }
 
                 else if (processorsTypesData.IsMatch(trimmedline))
                 {
                     if (processorsTypesDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR-TYPES -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR-TYPES -> Valid");
                     }
 
                     else
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : PROCESSORS-TYPES -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : PROCESSORS-TYPES -> Valid");
                     }
                 }
 
@@ -703,7 +704,7 @@ namespace PT1
                 {
                     if (processorTypeDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR-TYPE -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR-TYPE -> Valid");
                     }
 
                     else
@@ -722,11 +723,11 @@ namespace PT1
                             && processorTypeDataC1.IsMatch(processorC1)
                             && processorTypeDataC0.IsMatch(processorC0))
                         {
-                            Console.WriteLine("Line: " + trimmedline + " : PROCESSOR-TYPE -> Valid");
-                            Console.WriteLine("Line: " + processorName + " : PROCESSOR-TYPE BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + processorC2 + " : PROCESSOR-TYPE BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + processorC1 + " : PROCESSOR-TYPE BLOCK  -> Valid");
-                            Console.WriteLine("Line: " + processorC0 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + trimmedline + " : PROCESSOR-TYPE -> Valid");
+                            //Console.WriteLine("Line: " + processorName + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + processorC2 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + processorC1 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + processorC0 + " : PROCESSOR-TYPE BLOCK  -> Valid");
                             this.processorTypesList.Add(RetrieveProcessorTypeDetails(processorName, processorC2, processorC1, processorC0));
                         }
 
@@ -734,34 +735,34 @@ namespace PT1
                         {
                             if (!processorTypeDataName.IsMatch(processorName))
                             {
-                                Console.WriteLine("Line: " + processorName + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                                //Console.WriteLine("Line: " + processorName + " : PROCESSOR-TYPE BLOCK  -> Valid");
                                 errors++;
                                 errorList.Add(processorName);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
 
                             if (!processorTypeDataC2.IsMatch(processorC2))
                             {
-                                Console.WriteLine("Line: " + processorC2 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                                //Console.WriteLine("Line: " + processorC2 + " : PROCESSOR-TYPE BLOCK  -> Valid");
                                 errors++;
                                 errorList.Add(processorC2);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
 
                             if (!processorTypeDataC1.IsMatch(processorC1))
                             {
-                                Console.WriteLine("Line: " + processorC1 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                                //Console.WriteLine("Line: " + processorC1 + " : PROCESSOR-TYPE BLOCK  -> Valid");
                                 errors++;
                                 errorList.Add(processorC1);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
 
                             if (!processorTypeDataC0.IsMatch(processorC0))
                             {
-                                Console.WriteLine("Line: " + processorC0 + " : PROCESSOR-TYPE BLOCK  -> Valid");
+                                //Console.WriteLine("Line: " + processorC0 + " : PROCESSOR-TYPE BLOCK  -> Valid");
                                 errors++;
                                 errorList.Add(processorC0);
-                                Console.WriteLine("Errors Found: " + errors + " .");
+                                //Console.WriteLine("Errors Found: " + errors + " .");
                             }
                         }
                     }
@@ -771,7 +772,7 @@ namespace PT1
                 {
                     if (localCommunicationDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-LOCAL-COMMUNICATION -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-LOCAL-COMMUNICATION -> Valid");
                     }
 
                     else
@@ -781,16 +782,16 @@ namespace PT1
 
                         if (localCommunicationDataMAP.IsMatch(localCommunicationMAP))
                         {
-                            Console.WriteLine("Line: " + trimmedline + " : LOCAL-COMMUNICATION -> Valid");
-                            Console.WriteLine("Line: " + localCommunicationMAP + " : LOCAL-COMMUNICATION BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + trimmedline + " : LOCAL-COMMUNICATION -> Valid");
+                            //Console.WriteLine("Line: " + localCommunicationMAP + " : LOCAL-COMMUNICATION BLOCK  -> Valid");
                             RetrieveLocalCommunicationEnergyDetails();
                         }
                         else
                         {
-                            Console.WriteLine("Line: " + localCommunicationMAP + " : LOCAL-COMMUNICATION BLOCK  -> Invalid");
+                            //Console.WriteLine("Line: " + localCommunicationMAP + " : LOCAL-COMMUNICATION BLOCK  -> Invalid");
                             errors++;
                             errorList.Add(localCommunicationMAP);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
                     }
                 }
@@ -799,7 +800,7 @@ namespace PT1
                 {
                     if (remoteCommunicationDataEndpoint.IsMatch(trimmedline))
                     {
-                        Console.WriteLine("Line: " + trimmedline + " : END-REMOTE-COMMUNICATION -> Valid");
+                        //Console.WriteLine("Line: " + trimmedline + " : END-REMOTE-COMMUNICATION -> Valid");
                     }
 
                     else
@@ -809,25 +810,25 @@ namespace PT1
 
                         if (remoteCommunicationDataMAP.IsMatch(remoteCommunicationMAP))
                         {
-                            Console.WriteLine("Line: " + trimmedline + " : REMOTE-COMMUNICATION -> Valid");
-                            Console.WriteLine("Line: " + remoteCommunicationMAP + " : REMOTE-COMMUNICATION BLOCK  -> Valid");
+                            //Console.WriteLine("Line: " + trimmedline + " : REMOTE-COMMUNICATION -> Valid");
+                            //Console.WriteLine("Line: " + remoteCommunicationMAP + " : REMOTE-COMMUNICATION BLOCK  -> Valid");
                         }
                         else
                         {
-                            Console.WriteLine("Line: " + remoteCommunicationMAP + " : REMOTE-COMMUNICATION BLOCK  -> Invalid");
+                            //Console.WriteLine("Line: " + remoteCommunicationMAP + " : REMOTE-COMMUNICATION BLOCK  -> Invalid");
                             errors++;
                             errorList.Add(remoteCommunicationMAP);
-                            Console.WriteLine("Errors Found: " + errors + " .");
+                            //Console.WriteLine("Errors Found: " + errors + " .");
                         }
                     }
                 }
 
                 else
                 {
-                    Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match CFF Syntax -> Invalid");
+                    //Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match CFF Syntax -> Invalid");
                     errors++;
                     errorList.Add(trimmedline);
-                    Console.WriteLine("Errors Found: " + errors + " .");
+                    //Console.WriteLine("Errors Found: " + errors + " .");
                 }
 
                 // increement 1 index after each line check
@@ -850,6 +851,7 @@ namespace PT1
                     Console.WriteLine("Error- " + errCount + " : " + error);
                     errCount++;
                 }
+                return false;
             }
 
             else
@@ -894,7 +896,7 @@ namespace PT1
                     Console.WriteLine("Processor C1:  " + processorType.getProcessorC1());
                     Console.WriteLine("Processor C0:  " + processorType.getProcessorC0() + "\n");
                 }
-
+                return true;
             }
         }
 
@@ -908,9 +910,9 @@ namespace PT1
             this.programTasks = Int32.Parse(programDataTasks.Replace(programTasks, ""));
             this.programProcessors = Int32.Parse(programDataProcessors.Replace(programProcessors, ""));
 
-            Console.WriteLine("Program Duration:  " + this.programDuration + "\n");
-            Console.WriteLine("Program Tasks: " + this.programTasks + "\n");
-            Console.WriteLine("Program Processors: " + this.programProcessors + "\n");
+            //Console.WriteLine("Program Duration:  " + this.programDuration + "\n");
+            //Console.WriteLine("Program Tasks: " + this.programTasks + "\n");
+            //Console.WriteLine("Program Processors: " + this.programProcessors + "\n");
         }
 
         public Task RetrieveTaskDetails(string taskID, string taskRuntime, string taskReferenceFrequency, string taskRam, string taskDownload, string taskUpload)
@@ -934,20 +936,20 @@ namespace PT1
                 task.setTaskDownload(Int32.Parse(taskDataDOWNLOAD.Replace(taskDownload, "")));
                 task.setTaskUpload(Int32.Parse(taskDataUPLOAD.Replace(taskUpload, "")));
 
-                Console.WriteLine("Task ID:  " + task.getTaskID() + "\n");
-                Console.WriteLine("Task Runtime:  " + task.getTaskRuntime() + "\n");
-                Console.WriteLine("Task Ref Freq:  " + task.getTaskReferenceFrequency() + "\n");
-                Console.WriteLine("Task Ram:  " + task.getTaskRam() + "\n");
-                Console.WriteLine("Task Download:  " + task.getTaskDownload() + "\n");
-                Console.WriteLine("Task Upload:  " + task.getTaskUpload() + "\n");
+                //Console.WriteLine("Task ID:  " + task.getTaskID() + "\n");
+                //Console.WriteLine("Task Runtime:  " + task.getTaskRuntime() + "\n");
+                //Console.WriteLine("Task Ref Freq:  " + task.getTaskReferenceFrequency() + "\n");
+                //Console.WriteLine("Task Ram:  " + task.getTaskRam() + "\n");
+                //Console.WriteLine("Task Download:  " + task.getTaskDownload() + "\n");
+                //Console.WriteLine("Task Upload:  " + task.getTaskUpload() + "\n");
             }
 
             else
             {
-                Console.WriteLine("Task Numbers exceed the maximum tasks in the program.");
+                //Console.WriteLine("Task Numbers exceed the maximum tasks in the program.");
                 errors++;
                 errorList.Add(taskDataID);
-                Console.WriteLine("Errors Found: " + errors + " .");
+                //Console.WriteLine("Errors Found: " + errors + " .");
             }
 
             return task;
@@ -974,20 +976,20 @@ namespace PT1
                 processor.setProcessorDownload(Int32.Parse(processorDataDOWNLOAD.Replace(processorDownload, "")));
                 processor.setProcessorUpload(Int32.Parse(processorDataUPLOAD.Replace(processorUpload, "")));
 
-                Console.WriteLine("Processor ID:  " + processor.getProcessorID() + "\n");
-                Console.WriteLine("Processor Type:  " + processor.getProcessorType() + "\n");
-                Console.WriteLine("Processor Freq:  " + processor.getProcessorFrequency() + "\n");
-                Console.WriteLine("Processor Ram:  " + processor.getProcessorRam() + "\n");
-                Console.WriteLine("Processor Download:  " + processor.getProcessorDownload() + "\n");
-                Console.WriteLine("Processor Upload:  " + processor.getProcessorUpload() + "\n");
+                //Console.WriteLine("Processor ID:  " + processor.getProcessorID() + "\n");
+                //Console.WriteLine("Processor Type:  " + processor.getProcessorType() + "\n");
+                //Console.WriteLine("Processor Freq:  " + processor.getProcessorFrequency() + "\n");
+                //Console.WriteLine("Processor Ram:  " + processor.getProcessorRam() + "\n");
+                //Console.WriteLine("Processor Download:  " + processor.getProcessorDownload() + "\n");
+                //Console.WriteLine("Processor Upload:  " + processor.getProcessorUpload() + "\n");
             }
 
             else
             {
-                Console.WriteLine("Processor Numbers exceed the maximum processors in the program.");
+                //Console.WriteLine("Processor Numbers exceed the maximum processors in the program.");
                 errors++;
                 errorList.Add(processorID);
-                Console.WriteLine("Errors Found: " + errors + " .");
+                //Console.WriteLine("Errors Found: " + errors + " .");
             }
 
             return processor;
@@ -1007,11 +1009,10 @@ namespace PT1
             processorType.setProcessorC1(float.Parse(processorTypeDataC1.Replace(processorC1, "")));
             processorType.setProcessorC0(float.Parse(processorTypeDataC0.Replace(processorC0, "")));
 
-            Console.WriteLine("Processor Name:  " + processorType.getProcessorName() + "\n");
-            Console.WriteLine("Processor C2:  " + processorType.getProcessorC2() + "\n");
-            Console.WriteLine("Processor C1:  " + processorType.getProcessorC1() + "\n");
-            Console.WriteLine("Processor C0:  " + processorType.getProcessorC0() + "\n");
-
+            //Console.WriteLine("Processor Name:  " + processorType.getProcessorName() + "\n");
+            //Console.WriteLine("Processor C2:  " + processorType.getProcessorC2() + "\n");
+            //Console.WriteLine("Processor C1:  " + processorType.getProcessorC1() + "\n");
+            //Console.WriteLine("Processor C0:  " + processorType.getProcessorC0() + "\n");
 
             return processorType;
         }
@@ -1024,8 +1025,41 @@ namespace PT1
         public int IncrementIndex(int index, int number)
         {
             index = index + number;
-            Console.WriteLine("Current Index: " + index);
+            //Console.WriteLine("Current Index: " + index);
             return index;
+        }
+
+        public void PrintErrorDetails(TextBox textBox, TextBox textHeading)
+        {
+            if (errors > 0)
+            {
+                textHeading.BackColor = Color.Red;
+                textBox.AppendText("CFF File" + Environment.NewLine);
+                Console.WriteLine("The CFF file is invalid.");
+                Console.WriteLine("Number of syntax errors found: " + errors + " .");
+                Console.WriteLine("Errors are as follows: \n ");
+                textBox.AppendText("The CFF file is invalid." + Environment.NewLine);
+                textBox.AppendText("Number of errors found: " + errors + " ." + Environment.NewLine);
+                textBox.AppendText("Errors are as follows: " + Environment.NewLine);
+
+                int errCount = 1;
+
+                foreach (string error in errorList)
+                {
+                    Console.WriteLine("Error- " + errCount + " : " + error);
+                    textBox.AppendText("Error- " + errCount + " : " + error + Environment.NewLine);
+                    errCount++;
+                }
+
+                textBox.AppendText("END of CFF File" + Environment.NewLine);
+            }
+            else
+            {
+                textHeading.BackColor = Color.Green;
+                textBox.AppendText("CFF File" + Environment.NewLine);
+                textBox.AppendText("The CFF file is Valid, No errors to display." + Environment.NewLine);
+                textBox.AppendText("END of CFF File" + Environment.NewLine);
+            }
         }
     }
 }

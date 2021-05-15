@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PT1
 {
-    class ProcessorType
+    public class ProcessorType
     {
         // Vars
         private string processorName;
@@ -55,13 +55,34 @@ namespace PT1
 			this.processorC0 = processorC0;
 		}
 
-		// Constructors
+		// constructor
+		public ProcessorType(int C2, int C1, int C0, string processorType)
+		{
+			this.processorC2 = C2;
+			this.processorC1 = C1;
+			this.processorC0 = C0;
+			this.processorName = processorType;
+		}
+
 		public ProcessorType()
         {
 
         }
 
-        // Methods
 
-    }
+		// Methods 
+		public float CalculateProcessorEnergy(float time, float frequency)
+		{
+			float totalEnergy;
+			float energyC2, energyC1, energyC0;
+
+			energyC2 = (frequency * frequency) * processorC2;
+			energyC1 = frequency * processorC1;
+			energyC0 = processorC0;
+			totalEnergy = (energyC2 + energyC1 + energyC0) * time;
+
+			return totalEnergy;
+		}
+
+	}
 }

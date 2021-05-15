@@ -50,7 +50,7 @@ namespace PT1
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.allocationDetails = new System.Windows.Forms.TextBox();
             this.allocationsHeading = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.errorBox = new System.Windows.Forms.TextBox();
             this.errorsHeading = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -65,7 +65,7 @@ namespace PT1
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1902, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1902, 30);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -220,15 +220,15 @@ namespace PT1
             this.allocationsHeading.Text = "Allocations";
             this.allocationsHeading.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox2
+            // errorBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(1380, 160);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox2.Size = new System.Drawing.Size(450, 544);
-            this.textBox2.TabIndex = 9;
+            this.errorBox.Location = new System.Drawing.Point(1380, 160);
+            this.errorBox.Multiline = true;
+            this.errorBox.Name = "errorBox";
+            this.errorBox.ReadOnly = true;
+            this.errorBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.errorBox.Size = new System.Drawing.Size(450, 544);
+            this.errorBox.TabIndex = 9;
             // 
             // errorsHeading
             // 
@@ -250,7 +250,7 @@ namespace PT1
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1902, 953);
             this.Controls.Add(this.errorsHeading);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.errorBox);
             this.Controls.Add(this.allocationsHeading);
             this.Controls.Add(this.allocationDetails);
             this.Controls.Add(this.textBox1);
@@ -292,7 +292,7 @@ namespace PT1
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox allocationDetails;
         private System.Windows.Forms.TextBox allocationsHeading;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox errorBox;
         private System.Windows.Forms.TextBox errorsHeading;
     }
 }

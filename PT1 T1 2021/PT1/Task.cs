@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PT1
 {
-    class Task
+    public class Task
     {
         // Vars
         private int taskID;
