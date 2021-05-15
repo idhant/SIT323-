@@ -37,7 +37,7 @@ namespace PT1
 			this.processorType = processorType;
 		}
 
-		public float getProcessorFrequency()
+        public float getProcessorFrequency()
 		{
 			return this.processorFrequency;
 		}
@@ -86,7 +86,43 @@ namespace PT1
 		//Methods
 
 
-		//Test method
+		//Test methods
 
-    }
+		public bool IsRamSufficient(Task task)
+        {
+			if(processorRam >= task.getTaskRam())
+            {
+				return true;
+            }
+			else
+            {
+				return false;
+            }
+        }
+
+		public bool IsDownloadSufficient(Task task)
+		{
+			if (processorDownload >= task.getTaskDownload())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public bool IsUploadSufficient(Task task)
+		{
+			if (processorUpload >= task.getTaskUpload())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+	}
 }

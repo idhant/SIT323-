@@ -43,6 +43,26 @@ namespace PT1
             return cffFileLines;
         }
 
+        public int getErrors()
+        {
+            return this.errors;
+        }
+
+        public void setErrors(int errors)
+        {
+            this.errors = errors;
+        }
+
+        public ArrayList getErrorList()
+        {
+            return this.errorList;
+        }
+
+        public void setErrorList(ArrayList errorList)
+        {
+            this.errorList = errorList;
+        }
+
         public bool getIsValid()
         {
             return this.isValid;
@@ -1027,6 +1047,18 @@ namespace PT1
             index = index + number;
             //Console.WriteLine("Current Index: " + index);
             return index;
+        }
+
+        public bool ValidateError(string expectedError)
+        {
+            foreach (string error in errorList)
+            {
+                if (error == expectedError)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void PrintErrorDetails(TextBox textBox, TextBox textHeading)
