@@ -42,16 +42,19 @@ namespace PT1
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.TaffFile = new System.Windows.Forms.TextBox();
-            this.CffFile = new System.Windows.Forms.TextBox();
+            this.taffFileBox = new System.Windows.Forms.TextBox();
+            this.cffFileBox = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.TaffFileName = new System.Windows.Forms.TextBox();
-            this.CffFileName = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.allocationDetails = new System.Windows.Forms.TextBox();
+            this.taffFileHeading = new System.Windows.Forms.TextBox();
+            this.cffFileHeading = new System.Windows.Forms.TextBox();
+            this.instructionsBox = new System.Windows.Forms.TextBox();
+            this.allocationsBox = new System.Windows.Forms.TextBox();
             this.allocationsHeading = new System.Windows.Forms.TextBox();
             this.errorBox = new System.Windows.Forms.TextBox();
             this.errorsHeading = new System.Windows.Forms.TextBox();
+            this.instructionBox = new System.Windows.Forms.TextBox();
+            this.openTaffFile = new System.Windows.Forms.Button();
+            this.validateAllocations = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +68,7 @@ namespace PT1
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1902, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1856, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -140,25 +143,25 @@ namespace PT1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // TaffFile
+            // taffFileBox
             // 
-            this.TaffFile.Location = new System.Drawing.Point(12, 160);
-            this.TaffFile.Multiline = true;
-            this.TaffFile.Name = "TaffFile";
-            this.TaffFile.ReadOnly = true;
-            this.TaffFile.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TaffFile.Size = new System.Drawing.Size(450, 544);
-            this.TaffFile.TabIndex = 1;
+            this.taffFileBox.Location = new System.Drawing.Point(12, 383);
+            this.taffFileBox.Multiline = true;
+            this.taffFileBox.Name = "taffFileBox";
+            this.taffFileBox.ReadOnly = true;
+            this.taffFileBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.taffFileBox.Size = new System.Drawing.Size(450, 544);
+            this.taffFileBox.TabIndex = 1;
             // 
-            // CffFile
+            // cffFileBox
             // 
-            this.CffFile.Location = new System.Drawing.Point(468, 160);
-            this.CffFile.Multiline = true;
-            this.CffFile.Name = "CffFile";
-            this.CffFile.ReadOnly = true;
-            this.CffFile.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.CffFile.Size = new System.Drawing.Size(450, 544);
-            this.CffFile.TabIndex = 2;
+            this.cffFileBox.Location = new System.Drawing.Point(468, 383);
+            this.cffFileBox.Multiline = true;
+            this.cffFileBox.Name = "cffFileBox";
+            this.cffFileBox.ReadOnly = true;
+            this.cffFileBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.cffFileBox.Size = new System.Drawing.Size(450, 544);
+            this.cffFileBox.TabIndex = 2;
             // 
             // contextMenuStrip1
             // 
@@ -166,53 +169,53 @@ namespace PT1
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // TaffFileName
+            // taffFileHeading
             // 
-            this.TaffFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TaffFileName.Location = new System.Drawing.Point(12, 118);
-            this.TaffFileName.Multiline = true;
-            this.TaffFileName.Name = "TaffFileName";
-            this.TaffFileName.ReadOnly = true;
-            this.TaffFileName.Size = new System.Drawing.Size(450, 36);
-            this.TaffFileName.TabIndex = 4;
-            this.TaffFileName.Text = "Taff File";
-            this.TaffFileName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.taffFileHeading.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.taffFileHeading.Location = new System.Drawing.Point(12, 341);
+            this.taffFileHeading.Multiline = true;
+            this.taffFileHeading.Name = "taffFileHeading";
+            this.taffFileHeading.ReadOnly = true;
+            this.taffFileHeading.Size = new System.Drawing.Size(450, 36);
+            this.taffFileHeading.TabIndex = 4;
+            this.taffFileHeading.Text = "Taff File";
+            this.taffFileHeading.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // CffFileName
+            // cffFileHeading
             // 
-            this.CffFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CffFileName.Location = new System.Drawing.Point(468, 118);
-            this.CffFileName.Name = "CffFileName";
-            this.CffFileName.ReadOnly = true;
-            this.CffFileName.Size = new System.Drawing.Size(450, 36);
-            this.CffFileName.TabIndex = 5;
-            this.CffFileName.Text = "Cff File";
-            this.CffFileName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.cffFileHeading.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cffFileHeading.Location = new System.Drawing.Point(468, 341);
+            this.cffFileHeading.Name = "cffFileHeading";
+            this.cffFileHeading.ReadOnly = true;
+            this.cffFileHeading.Size = new System.Drawing.Size(450, 36);
+            this.cffFileHeading.TabIndex = 5;
+            this.cffFileHeading.Text = "Cff File";
+            this.cffFileHeading.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox1
+            // instructionsBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 31);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(1105, 81);
-            this.textBox1.TabIndex = 6;
-            this.textBox1.Text = resources.GetString("textBox1.Text");
+            this.instructionsBox.Location = new System.Drawing.Point(12, 73);
+            this.instructionsBox.Multiline = true;
+            this.instructionsBox.Name = "instructionsBox";
+            this.instructionsBox.ReadOnly = true;
+            this.instructionsBox.Size = new System.Drawing.Size(1818, 220);
+            this.instructionsBox.TabIndex = 6;
+            this.instructionsBox.Text = resources.GetString("instructionsBox.Text");
             // 
-            // allocationDetails
+            // allocationsBox
             // 
-            this.allocationDetails.Location = new System.Drawing.Point(924, 160);
-            this.allocationDetails.Multiline = true;
-            this.allocationDetails.Name = "allocationDetails";
-            this.allocationDetails.ReadOnly = true;
-            this.allocationDetails.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.allocationDetails.Size = new System.Drawing.Size(450, 544);
-            this.allocationDetails.TabIndex = 7;
+            this.allocationsBox.Location = new System.Drawing.Point(924, 383);
+            this.allocationsBox.Multiline = true;
+            this.allocationsBox.Name = "allocationsBox";
+            this.allocationsBox.ReadOnly = true;
+            this.allocationsBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.allocationsBox.Size = new System.Drawing.Size(450, 544);
+            this.allocationsBox.TabIndex = 7;
             // 
             // allocationsHeading
             // 
             this.allocationsHeading.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.allocationsHeading.Location = new System.Drawing.Point(924, 118);
+            this.allocationsHeading.Location = new System.Drawing.Point(924, 341);
             this.allocationsHeading.Name = "allocationsHeading";
             this.allocationsHeading.ReadOnly = true;
             this.allocationsHeading.Size = new System.Drawing.Size(450, 36);
@@ -222,7 +225,7 @@ namespace PT1
             // 
             // errorBox
             // 
-            this.errorBox.Location = new System.Drawing.Point(1380, 160);
+            this.errorBox.Location = new System.Drawing.Point(1380, 383);
             this.errorBox.Multiline = true;
             this.errorBox.Name = "errorBox";
             this.errorBox.ReadOnly = true;
@@ -235,7 +238,7 @@ namespace PT1
             this.errorsHeading.BackColor = System.Drawing.SystemColors.Control;
             this.errorsHeading.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.errorsHeading.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.errorsHeading.Location = new System.Drawing.Point(1380, 118);
+            this.errorsHeading.Location = new System.Drawing.Point(1380, 341);
             this.errorsHeading.Name = "errorsHeading";
             this.errorsHeading.ReadOnly = true;
             this.errorsHeading.Size = new System.Drawing.Size(450, 36);
@@ -243,21 +246,59 @@ namespace PT1
             this.errorsHeading.Text = "Errors";
             this.errorsHeading.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // instructionBox
+            // 
+            this.instructionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.instructionBox.Location = new System.Drawing.Point(12, 31);
+            this.instructionBox.Multiline = true;
+            this.instructionBox.Name = "instructionBox";
+            this.instructionBox.ReadOnly = true;
+            this.instructionBox.Size = new System.Drawing.Size(1818, 36);
+            this.instructionBox.TabIndex = 12;
+            this.instructionBox.Text = "Instructions";
+            this.instructionBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // openTaffFile
+            // 
+            this.openTaffFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.openTaffFile.Location = new System.Drawing.Point(12, 299);
+            this.openTaffFile.Name = "openTaffFile";
+            this.openTaffFile.Size = new System.Drawing.Size(242, 36);
+            this.openTaffFile.TabIndex = 13;
+            this.openTaffFile.Text = "Open .taff File";
+            this.openTaffFile.UseVisualStyleBackColor = true;
+            this.openTaffFile.Click += new System.EventHandler(this.openTaffFile_Click);
+            // 
+            // validateAllocations
+            // 
+            this.validateAllocations.Enabled = false;
+            this.validateAllocations.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.validateAllocations.Location = new System.Drawing.Point(260, 299);
+            this.validateAllocations.Name = "validateAllocations";
+            this.validateAllocations.Size = new System.Drawing.Size(279, 36);
+            this.validateAllocations.TabIndex = 14;
+            this.validateAllocations.Text = "Validate Allocations";
+            this.validateAllocations.UseVisualStyleBackColor = true;
+            this.validateAllocations.Click += new System.EventHandler(this.validateAllocations_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1902, 953);
+            this.ClientSize = new System.Drawing.Size(1856, 953);
+            this.Controls.Add(this.validateAllocations);
+            this.Controls.Add(this.openTaffFile);
+            this.Controls.Add(this.instructionBox);
             this.Controls.Add(this.errorsHeading);
             this.Controls.Add(this.errorBox);
             this.Controls.Add(this.allocationsHeading);
-            this.Controls.Add(this.allocationDetails);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.CffFileName);
-            this.Controls.Add(this.TaffFileName);
-            this.Controls.Add(this.CffFile);
-            this.Controls.Add(this.TaffFile);
+            this.Controls.Add(this.allocationsBox);
+            this.Controls.Add(this.instructionsBox);
+            this.Controls.Add(this.cffFileHeading);
+            this.Controls.Add(this.taffFileHeading);
+            this.Controls.Add(this.cffFileBox);
+            this.Controls.Add(this.taffFileBox);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MaximumSize = new System.Drawing.Size(1920, 1080);
@@ -284,16 +325,19 @@ namespace PT1
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.TextBox TaffFile;
-        private System.Windows.Forms.TextBox CffFile;
+        private System.Windows.Forms.TextBox taffFileBox;
+        private System.Windows.Forms.TextBox cffFileBox;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.TextBox TaffFileName;
-        private System.Windows.Forms.TextBox CffFileName;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox allocationDetails;
+        private System.Windows.Forms.TextBox taffFileHeading;
+        private System.Windows.Forms.TextBox cffFileHeading;
+        private System.Windows.Forms.TextBox instructionsBox;
+        private System.Windows.Forms.TextBox allocationsBox;
         private System.Windows.Forms.TextBox allocationsHeading;
         private System.Windows.Forms.TextBox errorBox;
         private System.Windows.Forms.TextBox errorsHeading;
+        private System.Windows.Forms.TextBox instructionBox;
+        private System.Windows.Forms.Button openTaffFile;
+        private System.Windows.Forms.Button validateAllocations;
     }
 }
 

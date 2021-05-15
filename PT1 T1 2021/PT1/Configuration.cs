@@ -1061,6 +1061,8 @@ namespace PT1
             return false;
         }
 
+        //public 
+
         public void PrintErrorDetails(TextBox textBox, TextBox textHeading)
         {
             if (errors > 0)
@@ -1084,6 +1086,7 @@ namespace PT1
                 }
 
                 textBox.AppendText("END of CFF File" + Environment.NewLine);
+                textBox.AppendText(Environment.NewLine);
             }
             else
             {

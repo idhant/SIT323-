@@ -519,7 +519,9 @@ namespace PT1
                 }
 
                 textBox.AppendText("END of TAFF File" + Environment.NewLine);
+                textBox.AppendText(Environment.NewLine);
             }
+
             else
             {
                 textHeading.BackColor = Color.Green;
