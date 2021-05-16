@@ -17,6 +17,7 @@ namespace UnitTestProject1
             PT1.TaskAllocations taskAllocations = new TaskAllocations();
 
             // Getting the filelines to be passed to the Validate method
+            // Navigating to the path of the file store in the test project folder.
             string pathOfFile = @"Programming Task 1 - Data Files\PT1 - Test1.taff";
             string currentPath = Directory.GetCurrentDirectory();
             Console.WriteLine("Current Path: " + currentPath);
@@ -53,6 +54,7 @@ namespace UnitTestProject1
             PT1.TaskAllocations taskAllocations = new TaskAllocations();
 
             // Getting the filelines to be passed to the Validate method
+            // Navigating to the path of the file store in the test project folder.
             string pathOfFile = @"Programming Task 1 - Data Files\PT1 - Test2.taff";
             string currentPath = Directory.GetCurrentDirectory();
             Console.WriteLine("Current Path: " + currentPath);
@@ -90,6 +92,7 @@ namespace UnitTestProject1
             PT1.TaskAllocations taskAllocations = new TaskAllocations();
 
             // Getting the filelines to be passed to the Validate method
+            // Navigating to the path of the file store in the test project folder.
             string pathOfFile = @"Programming Task 1 - Data Files\PT1 - Test3.taff";
             string currentPath = Directory.GetCurrentDirectory();
             Console.WriteLine("Current Path: " + currentPath);
@@ -127,6 +130,7 @@ namespace UnitTestProject1
             PT1.TaskAllocations taskAllocations = new TaskAllocations();
 
             // Getting the filelines to be passed to the Validate method
+            // Navigating to the path of the file store in the test project folder.
             string pathOfFile = @"Programming Task 1 - Data Files\PT1 - Test4.taff";
             string currentPath = Directory.GetCurrentDirectory();
             Console.WriteLine("Current Path: " + currentPath);

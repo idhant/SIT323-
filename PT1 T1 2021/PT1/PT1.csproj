@@ -47,29 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Allocation.cs" />
-    <Compile Include="AllocationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AllocationForm.Designer.cs">
-      <DependentUpon>AllocationForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Energy.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="ProcessorType.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="ErrorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ErrorForm.Designer.cs">
-      <DependentUpon>ErrorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AboutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutForm.Designer.cs">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="TaskAllocations.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -81,9 +63,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AllocationForm.resx">
-      <DependentUpon>AllocationForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

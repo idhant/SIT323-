@@ -1049,7 +1049,7 @@ namespace PT1
             return index;
         }
 
-        public bool ValidateError(string expectedError)
+        public bool ValidateCFFFileErrors(string expectedError)
         {
             foreach (string error in errorList)
             {
@@ -1060,8 +1060,6 @@ namespace PT1
             }
             return false;
         }
-
-        //public 
 
         public void PrintErrorDetails(TextBox textBox, TextBox textHeading)
         {

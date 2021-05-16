@@ -27,12 +27,6 @@ namespace PT1
         // Event Functions which validates the taff and cff files and displays the contents on the form boxes
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Initialising the dialog method along with the propertites
-            OpenFileDialog theDialog = new OpenFileDialog();
-            theDialog.Title = "Open TAFF File";
-            theDialog.Filter = "TAFF files|*.taff";
-            theDialog.InitialDirectory = @"C:\";
-
             // Constant values of objects used to prevent any magic numbers
             string emptyText = "";
             string taffFileValid = "Taff File (Valid)";
@@ -43,8 +37,18 @@ namespace PT1
             Color colorInvalid = Color.Red;
             Color colorNeutral = Color.White;
 
-
-
+            // Initialising the dialog method along with the propertites
+            OpenFileDialog theDialog = new OpenFileDialog();
+            theDialog.Title = "Open TAFF File";
+            theDialog.Filter = "TAFF files|*.taff";
+            theDialog.InitialDirectory = @"C:\";
+            /*
+            string pathOfFolder = @"Programming Task 1 - Data Files";
+            Regex dirRegex = new Regex(@"PT1\.*");
+            string rootFolder = dirRegex.Replace(Directory.GetCurrentDirectory(), emptyText);
+            pathOfFolder = rootFolder + pathOfFolder;
+            theDialog.InitialDirectory = pathOfFolder;
+            */
             // If the dialog result is Ok, i.e the user opens a file correctly.
             // Try and catch method to prevent the user from opening different types of files
             if (theDialog.ShowDialog() == DialogResult.OK)
@@ -156,7 +160,18 @@ namespace PT1
             OpenFileDialog theDialog = new OpenFileDialog();
             theDialog.Title = "Open TAFF File";
             theDialog.Filter = "TAFF files|*.taff";
-            theDialog.InitialDirectory = @"C:\";
+            //theDialog.InitialDirectory = @"C:\";
+            theDialog.InitialDirectory = Directory.GetCurrentDirectory();
+
+            // Constant values of objects used to prevent any magic numbers
+            string emptyText = "";
+            string taffFileValid = "Taff File (Valid)";
+            string cffFileValid = "Cff File (Valid)";
+            string taffFileInvalid = "Taff File (Invalid)";
+            string cffFileInvalid = "Cff File (Invalid)";
+            Color colorValid = Color.Green;
+            Color colorInvalid = Color.Red;
+            Color colorNeutral = Color.White;
 
             // If the dialog result is Ok, i.e the user opens a file correctly.
             // Try and catch method to prevent the user from opening different types of files
@@ -164,19 +179,19 @@ namespace PT1
             {
                 try
                 {
-                    string emptyText = "";
-                    string taffFileValid = "Taff File (Valid)";
-                    string cffFileValid = "Cff File (Valid)";
-                    string taffFileInvalid = "Taff File (Invalid)";
-                    string cffFileInvalid = "Cff File (Invalid)";
-                    Color colorValid = Color.Green;
-                    Color colorInvalid = Color.Red;
-
-                    // reseting the text in the output boxes
-                    allocationsBox.Text = emptyText;
-                    errorBox.Text = emptyText;
+                    // reseting the text and colors in the output boxes
                     taffFileBox.Text = emptyText;
                     cffFileBox.Text = emptyText;
+                    allocationsBox.Text = emptyText;
+                    errorBox.Text = emptyText;
+                    taffFileHeading.BackColor = colorNeutral;
+                    cffFileHeading.BackColor = colorNeutral;
+                    allocationsHeading.BackColor = colorNeutral;
+                    errorsHeading.BackColor = colorNeutral;
+
+                    // Reseting the validations of allocations. They turn to true if the files are valid
+                    allocationsToolStripMenuItem.Enabled = false;
+                    validateAllocations.Enabled = false;
 
                     // Initialising the local objects 
                     TaskAllocations taskAllocations = new TaskAllocations();

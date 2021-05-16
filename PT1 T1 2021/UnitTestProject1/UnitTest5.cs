@@ -17,6 +17,7 @@ namespace UnitTestProject1
             PT1.Configuration configuration = new Configuration();
 
             // Getting the filelines to be passed to the Validate method
+            // Navigating to the path of the file store in the test project folder.
             string pathOfFile = @"Programming Task 1 - Data Files\PT1 - Test1.cff";
             string currentPath = Directory.GetCurrentDirectory();
             Console.WriteLine("Current Path: " + currentPath);
@@ -53,6 +54,7 @@ namespace UnitTestProject1
             PT1.Configuration configuration = new Configuration();
 
             // Getting the filelines to be passed to the Validate method
+            // Navigating to the path of the file store in the test project folder.
             string pathOfFile = @"Programming Task 1 - Data Files\PT1 - Test2.cff";
             string currentPath = Directory.GetCurrentDirectory();
             Console.WriteLine("Current Path: " + currentPath);
@@ -89,6 +91,7 @@ namespace UnitTestProject1
             PT1.Configuration configuration = new Configuration();
 
             // Getting the filelines to be passed to the Validate method
+            // Navigating to the path of the file store in the test project folder.
             string pathOfFile = @"Programming Task 1 - Data Files\PT1 - Test3.cff";
             string currentPath = Directory.GetCurrentDirectory();
             Console.WriteLine("Current Path: " + currentPath);
@@ -125,6 +128,7 @@ namespace UnitTestProject1
             PT1.Configuration configuration = new Configuration();
 
             // Getting the filelines to be passed to the Validate method
+            // Navigating to the path of the file store in the test project folder.
             string pathOfFile = @"Programming Task 1 - Data Files\PT1 - Test4.cff";
             string currentPath = Directory.GetCurrentDirectory();
             Console.WriteLine("Current Path: " + currentPath);

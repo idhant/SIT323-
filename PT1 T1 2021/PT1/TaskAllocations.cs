@@ -11,130 +11,155 @@ using System.Windows.Forms;
 
 namespace PT1
 {
+    /// <summary>
+    /// Object type to store and manipulate the details of the .taff file.
+    /// </summary>
     public class TaskAllocations
     {
-        // Vars
+        
+        // CLASS MEMBER VARIABLES
+
+        /// <summary>
+        /// Member Variable which stores the lines from the taff file in a string array.
+        /// </summary>
         private String[] taffFileLines;
 
-        // error and validation related vars
+        // error and validation related vars.
+
+        /// <summary>
+        /// Member Variable which stores the number of errors as a integer.
+        /// </summary>
         private int errors;
+
+        /// <summary>
+        /// Member Variable which stores the errors in a Array List.
+        /// </summary>
         private ArrayList errorList = new ArrayList();
+
+        /// <summary>
+        /// Member Variable which stores a boolean value to see if the taff file is valid or not.
+        /// </summary>
         private bool isValid;
 
-        // cff path and name related vars
+        // cff path and name related vars.
+
+        /// <summary>
+        /// Member Variable which stores the directory path of the taff file.
+        /// </summary>
         private string dirPath;
+
+        /// <summary>
+        /// Member Variable which stores the name of the cff file obtained from the taff file.
+        /// </summary>
         private string cffName;
+
+        /// <summary>
+        /// Member Variable which stores the directory path of the cff file.
+        /// </summary>
         private string cffFilePath;
 
         // vars used to store the values of relevent things from the TAFF file
+
+        /// <summary>
+        /// Member Variable which stores the total number of allocations.
+        /// </summary>
         private int totalAllocations;
+
+        /// <summary>
+        /// Member Variable which stores the total number of tasks in each allocation.
+        /// </summary>
         private int totalTasks;
+
+        /// <summary>
+        /// Member Variable which stores the total number of processors for each allocation.
+        /// </summary>
         private int totalProcessors;
 
-        //private ArrayList allocationList = new ArrayList();
+        /// <summary>
+        /// Member Variable which stores the the list of Allocation Type objects.
+        /// </summary>
         private List<Allocation> allocationList = new List<Allocation>();
-        //private Allocation[] allocationList;
 
-        // Getters and Setters
-        public int getErrors()
-        {
-            return this.errors;
-        }
+        // CLASS PROPERTY METHODS
 
-        public void setErrors(int errors)
-        {
-            this.errors = errors;
-        }
-
-        public ArrayList getErrorList()
-        {
-            return this.errorList;
-        }
-
-        public void setErrorList(ArrayList errorList)
-        {
-            this.errorList = errorList;
-        }
+        /// <summary>
+        /// Getter property to retrieve the allocation list.
+        /// </summary>
+        /// <returns>A allocation list of type List{Allocation}. </returns>
         public List<Allocation> getAllocationList()
         {
             return this.allocationList;
         }
 
+        /// <summary>
+        /// Getter property to retrieve the bool value representing the validity of the taff file.
+        /// </summary>
+        /// <returns>A boolean value representing the validity of the taff file.</returns>
         public bool getIsValid()
         {
             return this.isValid;
         }
 
-        public void setTotalAllocations(int totalAllocations)
-        {
-            this.totalAllocations = totalAllocations;
-        }
-
-        public void setTotalTasks(int totalTasks)
-        {
-            this.totalTasks = totalTasks;
-        }
-
-        public void setTotalProcessors(int totalProcessors)
-        {
-            this.totalProcessors = totalProcessors;
-        }
-
-        public void setCffName(string cffName)
-        {
-            this.cffName = cffName;
-        }
-
-        public void setCffFilePath(string cffFilePath)
-        {
-            this.cffFilePath = cffFilePath;
-        }
-
+        /// <summary>
+        /// Getter property to retrieve the directory path of the cff file.
+        /// </summary>
+        /// <returns>A string value which contains the path.</returns>
         public string getCffFilePath()
         {
             return this.cffFilePath;
         }
 
+        /// <summary>
+        /// Getter property to retrieve all the lines read from the taff file.
+        /// </summary>
+        /// <returns>A string array which cotains the lines.</returns>
         public String[] getTAFFFileLines()
         {
             return taffFileLines;
         }
 
-        public int getTotalAllocations()
-        {
-            return this.totalAllocations;
-        }
-
+        /// <summary>
+        /// Getter property to retrieve the total number of tasks.
+        /// </summary>
+        /// <returns>A integer representing the total number of tasks.</returns>
         public int getTotalTasks()
         {
             return this.totalTasks;
         }
 
+        /// <summary>
+        /// Getter property to retrieve the total number of processors.
+        /// </summary>
+        /// <returns>A integer representing the total number of processors.</returns>
         public int getTotalProcessors()
         {
             return this.totalProcessors;
         }
 
 
-        // Constructors
+        // CLASS CONSTRUCTORS
         public TaskAllocations()
         {
 
         }
 
-        public TaskAllocations(string cffName, int totalAllocations, int totalTasks, int totalProcessors)
-        {
+        // CLASS METHODS
 
-        }
-
-       
-
+        /// <summary>
+        /// Method to store the lines read from the taff file to the taffFilelines member variable.
+        /// </summary>
+        /// <param name="filename">The path of the taff file that needs to be read.</param>
         public void StoreTAFFLines(String filename)
         {
             this.taffFileLines = File.ReadAllLines(filename);
             Console.WriteLine("TAFF File lines copied to ArrrayList.");
         }
 
+        /// <summary>
+        /// Method to read the cff file name from the file lines of taff file.
+        /// </summary>
+        /// <param name="filename">The path of the taff file that needs to be read.</param>
+        /// <returns></returns>
         public string ReadCFFFileName(String filename)
         {
             Console.WriteLine("Starting function to extract CFF Name from the TAFF File." + "\n");
@@ -148,15 +173,20 @@ namespace PT1
                     string trimmedline = null;
                     trimmedline = line.Trim();
                     Console.WriteLine(trimmedline);
-                    Regex regex = new Regex("^FILENAME=");
-                    Regex trimQuotes = new Regex("\"");
+
+                    string regexStringFilenameRegex = "^FILENAME=";
+                    string regexStringTrimQuotes = "\"";
+                    string regexStringemptyText = "";
+
+                    Regex regex = new Regex(regexStringFilenameRegex);
+                    Regex trimQuotes = new Regex(regexStringTrimQuotes);
 
                     if (regex.IsMatch(trimmedline))
                     {
                         Console.WriteLine("CFF file name found, Extracting name... ");
-                        CFFname = regex.Replace(trimmedline, "");
+                        CFFname = regex.Replace(trimmedline, regexStringemptyText);
                         String trimmedCFFname;
-                        trimmedCFFname = trimQuotes.Replace(CFFname, "");
+                        trimmedCFFname = trimQuotes.Replace(CFFname, regexStringemptyText);
                         CFFname = trimmedCFFname;
                         Console.WriteLine("CFF File Name Extracted: " + CFFname + " .");
                     }
@@ -172,6 +202,10 @@ namespace PT1
             return CFFname;
         }
 
+        /// <summary>
+        /// Method to retrieve the path a file and storing that path in the member variable dirPath.
+        /// </summary>
+        /// <param name="file">File that path needs to be found.</param>
         public void GetDirectoryPath(string file)
         {
             FileInfo fileInfo = new FileInfo(file);
@@ -180,14 +214,24 @@ namespace PT1
             this.dirPath = path;
         }
 
+        /// <summary>
+        /// Method to read the path of the cff file.
+        /// </summary>
+        /// <returns>A string value containing the path of the cff file.</returns>
         public string ReadCFFFilePath()
         {
-            this.cffFilePath = this.dirPath + "\\" + this.cffName;
+            string pathSeparator = "\\";
+            this.cffFilePath = this.dirPath + pathSeparator + this.cffName;
             Console.WriteLine("Location of the CFF File is: " + this.cffFilePath);
 
             return this.cffFilePath;
         }
 
+        /// <summary>
+        /// Method to append the text of the taff file to the textBox in the application.
+        /// </summary>
+        /// <param name="filename">Path of the file that needs to be read to end.</param>
+        /// <param name="textBox">Textbox to which lines are to be appended.</param>
         public void WriteTAFFFileData(String filename, TextBox textBox)
         {
             StreamReader streamReader = new StreamReader(filename);
@@ -195,47 +239,79 @@ namespace PT1
             Console.WriteLine("TAFF File Data printed on screen.");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filelines"></param>
+        /// <returns></returns>
         public bool ValidateTAFFFile(String[] filelines)
         {
+            // Local initialisation of variables used to hold errors info and index of the line array.
             int index = 0;
             int errors = 0;
             ArrayList errorList = new ArrayList();
 
             Console.WriteLine("Validating TAFF File. " + "\n");
 
+            // Looping till the file ends.
             while (index < filelines.Length)
             {
                 //Console.WriteLine("Current Index: " + index);
+                
+                // initialising the trimmedline and trimming it
                 string trimmedline = null;
                 trimmedline = filelines[index].Trim();
 
-                Regex comment = new Regex(@"//.*");
+                // Regex string intialisations
+                string regexStringcomment = @"//.*";
 
-                Regex configurationData = new Regex("CONFIGURATION-DATA");
-                Regex CFFfilename = new Regex("FILENAME=");
-                Regex configurationDataEndpoint = new Regex("END-CONFIGURATION-DATA");
+                string regexStringConfigurationData = "CONFIGURATION-DATA";
+                string regexStringCffFilename = "FILENAME=";
+                string regexStringConfigurationDataEndpoint = "END-CONFIGURATION-DATA";
+                
+                string regexStringAllocationsData = "ALLOCATIONS";
+                string regexStringAllocationsDataEndpoint = "END-ALLOCATIONS";
+                string regexStringAllocationsDataCount = @"COUNT=\d";
+                string regexStringAllocationsDataTasks = @"TASKS=\d";
+                string regexStringAllocationsDataProcessors = @"PROCESSORS=\d";
 
-                Regex allocationsData = new Regex("ALLOCATIONS");
-                Regex allocationsDataEndpoint = new Regex("END-ALLOCATIONS");
-                Regex allocationsDataCount = new Regex(@"COUNT=\d");
-                Regex allocationsDataTasks = new Regex(@"TASKS=\d");
-                Regex allocationsDataProcessors = new Regex(@"PROCESSORS=\d");
+                string regexStringAllocationData = "ALLOCATION";
+                string regexStringAllocationDataEndpoint = "END-ALLOCATION";
+                string regexStringAllocationDataID = @"ID=\d";
+                string regexStringAllocationDataMap = @"MAP=.*";
 
-                Regex allocationData = new Regex("ALLOCATION");
-                Regex allocationDataEndpoint = new Regex("END-ALLOCATION");
-                Regex allocationDataID = new Regex(@"ID=\d");
-                Regex allocationDataMap = new Regex(@"MAP=.*");
+                // Regex initialisations
+                Regex comment = new Regex(regexStringcomment);
 
+                Regex configurationData = new Regex(regexStringConfigurationData);
+                Regex cffFilename = new Regex(regexStringCffFilename);
+                Regex configurationDataEndpoint = new Regex(regexStringConfigurationDataEndpoint);
+
+                Regex allocationsData = new Regex(regexStringAllocationsData);
+                Regex allocationsDataEndpoint = new Regex(regexStringAllocationsDataEndpoint);
+                Regex allocationsDataCount = new Regex(regexStringAllocationsDataCount);
+                Regex allocationsDataTasks = new Regex(regexStringAllocationsDataTasks);
+                Regex allocationsDataProcessors = new Regex(regexStringAllocationsDataProcessors);
+
+                Regex allocationData = new Regex(regexStringAllocationData);
+                Regex allocationDataEndpoint = new Regex(regexStringAllocationDataEndpoint);
+                Regex allocationDataID = new Regex(regexStringAllocationDataID);
+                Regex allocationDataMap = new Regex(regexStringAllocationDataMap);
+
+                // Empty Line.
                 if (trimmedline.Length == 0)
                 {
                     //Console.WriteLine("Line: " + trimmedline + " : Empty Line -> Valid");
                 }
 
+                // Comment Line.
                 else if (comment.IsMatch(trimmedline))
                 {
                     //Console.WriteLine("Line: " + trimmedline + " : Comment Line -> Valid");
                 }
 
+                // Config Block
+                // If block invalid add error to list and increment number of errors
                 else if (configurationData.IsMatch(trimmedline))
                 {
                     if (configurationDataEndpoint.IsMatch(trimmedline))
@@ -248,7 +324,7 @@ namespace PT1
                         index = IncrementIndex(index, 1);
                         string filename = filelines[index].Trim();
 
-                        if (CFFfilename.IsMatch(filename))
+                        if (cffFilename.IsMatch(filename))
                         {
                             //Console.WriteLine("Line: " + trimmedline + " : CONFIGURATION -> Valid");
                             //Console.WriteLine("Line: " + filename + " : CONFIGURATION Block -> Valid");
@@ -263,6 +339,9 @@ namespace PT1
                     }
                 }
 
+                // Allocations Block
+                // If block valid, retrieve general allocations details
+                // If block invalid add error to list and increment number of errors
                 else if (allocationsData.IsMatch(trimmedline))
                 {
                     if (allocationsDataEndpoint.IsMatch(trimmedline))
@@ -315,6 +394,9 @@ namespace PT1
 
                 }
 
+                // Individual Allocation Block
+                // If block valid, retrieve individual allocation details
+                // If block invalid add error to list and increment number of errors
                 else if (allocationData.IsMatch(trimmedline))
                 {
                     if (allocationDataEndpoint.IsMatch(trimmedline))
@@ -358,6 +440,8 @@ namespace PT1
 
                 }
 
+                // Invalid syntax line
+                // Add error to list and increment number of errors
                 else
                 {
                     //Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match TAFF Syntax -> Invalid");
@@ -366,12 +450,14 @@ namespace PT1
                     //Console.WriteLine("Errors Found: " + errors + " .");
                 }
 
-                // increement 1 index after each line check
+                // increment 1 index after each line/block check 
                 index = IncrementIndex(index, 1);
             }
 
             Console.WriteLine("Ending Validation of TAFF file. " + "\n");
 
+            // If errors are ther change the isValid to false and assign the local error related vars to global vars
+            // Also return false
             if (errors > 0)
             {
                 this.isValid = false;
@@ -392,6 +478,8 @@ namespace PT1
                 return false;
             }
 
+            // Set isValid to true and return true.
+            // Also print out the details of the file.
             else
             {
                 Console.WriteLine("The TAFF file is valid. \n");
@@ -416,38 +504,65 @@ namespace PT1
 
         }
 
+        /// <summary>
+        /// Method to retrieve the general allocation details from the tff file.
+        /// </summary>
+        /// <param name="allocationsCount">This contains the string which has the number of allocations.</param>
+        /// <param name="allocationsTasks">This contains the string which has the number of tasks.</param>
+        /// <param name="allocationsProcessors">This contains the string which has the number of processors.</param>
         public void RetrieveAllocationsDetails(string allocationsCount, string allocationsTasks, string allocationsProcessors)
         {
-            Regex allocationsDataCount = new Regex(@"COUNT=");
-            Regex allocationsDataTasks = new Regex(@"TASKS=");
-            Regex allocationsDataProcessors = new Regex(@"PROCESSORS=");
+            // constant strings
+            string emptyText = "";
 
-            this.totalAllocations = Int32.Parse(allocationsDataCount.Replace(allocationsCount, ""));
-            this.totalTasks = Int32.Parse(allocationsDataTasks.Replace(allocationsTasks, ""));
-            this.totalProcessors = Int32.Parse(allocationsDataProcessors.Replace(allocationsProcessors, ""));
+            // Regex string init
+            string regexStringAllocationsDataCount = @"COUNT=";
+            string regexStringAllocationsDataTasks = @"TASKS=";
+            string regexStringAllocationsDataProcessors = @"PROCESSORS=";
 
-            //this.allocationList = new Allocation[totalAllocations];
-            //this.allocationList = new Allocation[totalAllocations];
+            // Regex init
+            Regex allocationsDataCount = new Regex(regexStringAllocationsDataCount);
+            Regex allocationsDataTasks = new Regex(regexStringAllocationsDataTasks);
+            Regex allocationsDataProcessors = new Regex(regexStringAllocationsDataProcessors);
+
+            this.totalAllocations = Int32.Parse(allocationsDataCount.Replace(allocationsCount, emptyText));
+            this.totalTasks = Int32.Parse(allocationsDataTasks.Replace(allocationsTasks, emptyText));
+            this.totalProcessors = Int32.Parse(allocationsDataProcessors.Replace(allocationsProcessors, emptyText));
 
             //Console.WriteLine("TotalAllocations: " + this.totalAllocations + "\n");
             //Console.WriteLine("TotalTasks: " + this.totalTasks + "\n");
             //Console.WriteLine("TotalProcessors: " + this.totalProcessors + "\n");
         }
 
+        /// <summary>
+        /// Method to retrieve the each individual allocation details from the tff file.
+        /// </summary>
+        /// <param name="allocationID">This contains the string which has the allocation Id.</param>
+        /// <param name="allocationMAP">This contains the string which has the allocation map.</param>
+        /// <returns>Allocation Object with assigned details.</returns>
         public Allocation RetrieveAllocationDetail(string allocationID, string allocationMAP)
         {
-            Regex allocationDataID = new Regex(@"ID=");
-            Regex allocationDataMap = new Regex(@"MAP=");
+            // constant strings
+            string emptyText = "";
+            
+            // Regex string init
+            string regexStringAllocationDataID = @"ID=";
+            string regexStringAllocationDataMap = @"MAP=";
 
-            int allocationId = Int32.Parse(allocationDataID.Replace(allocationID, ""));
-            string allocationMap = allocationDataMap.Replace(allocationMAP, "");
+            // Regex init
+            Regex allocationDataID = new Regex(regexStringAllocationDataID);
+            Regex allocationDataMap = new Regex(regexStringAllocationDataMap);
+
+            // Getting the allocation details needed.
+            int allocationId = Int32.Parse(allocationDataID.Replace(allocationID, emptyText));
+            string allocationMap = allocationDataMap.Replace(allocationMAP, emptyText);
+            
+            // Creating a allocation object
             Allocation allocation = new Allocation();
 
             if (allocationId < totalAllocations)
             {
                 // id assignment
-                //this.allocationList[allocationId].setAllocationID(allocationId);
-                //allocations[allocationId].setAllocationID(allocationId);
                 allocation.setAllocationID(allocationId);
 
                 // Matrix size init
@@ -455,15 +570,23 @@ namespace PT1
 
                 // Matrix Tasks Row Combination extraction
 
-                Regex firstTaskSetRegex = new Regex(@";\d,\d,\d,\d,\d");
-                Regex firstTaskSetRemovalRegex = new Regex(@"^\d,\d,\d,\d,\d;");
-                //Regex firstTaskColonRemovalRegex = new Regex(@"^;");
-                Regex firstTaskRegex = new Regex(@",\d");
-                Regex firstTaskRemovalRegex = new Regex(@"^\d,");
+                // Regex string init
+                string regexStringFirstTaskSetRegex = @";\d,\d,\d,\d,\d";
+                string regexStringFirstTaskSetRemovalRegex = @"^\d,\d,\d,\d,\d;";
+                string regexStringFirstTaskRegex = @",\d";
+                string regexStringFirstTaskRemovalRegex = @"^\d,";
 
+                // Regex init
+                Regex firstTaskSetRegex = new Regex(regexStringFirstTaskSetRegex);
+                Regex firstTaskSetRemovalRegex = new Regex(regexStringFirstTaskSetRemovalRegex);
+                Regex firstTaskRegex = new Regex(regexStringFirstTaskRegex);
+                Regex firstTaskRemovalRegex = new Regex(regexStringFirstTaskRemovalRegex);
+
+                // Array to hold the rows and columns
                 string[] processorTaskSet = new string[totalProcessors];
                 int[] taskSet = new int[totalTasks];
 
+                // adding the value of 0/1 task assignment to the matching processor and task
                 for (int processor = 0; processor < totalProcessors; processor++)
                 {
                     processorTaskSet[processor] = firstTaskSetRegex.Replace(allocationMap, "");
@@ -477,11 +600,9 @@ namespace PT1
                         //Console.WriteLine("Processor task Set String after: " + processorTaskSet[processor]);
                     }
                     //Console.WriteLine("Allocation Map String, before the set removal: " + allocationMap);
-                    allocationMap = firstTaskSetRemovalRegex.Replace(allocationMap, "");
+                    allocationMap = firstTaskSetRemovalRegex.Replace(allocationMap, emptyText);
                     //Console.WriteLine("Allocation Map String, after the set removal: " + allocationMap);
                 }
-                //this.allocationList[allocationId].setAllocationMap(allocationMatrix);
-                //allocations[allocationId].setAllocationMap(allocationMatrix);
               
                 allocation.setAllocationMap(allocationMatrix);
 
@@ -489,6 +610,12 @@ namespace PT1
             return allocation;
         }
 
+        /// <summary>
+        /// Method used to increment the index in the loop to read the filelines of the taff file.
+        /// </summary>
+        /// <param name="index">Current index as a positive integer.</param>
+        /// <param name="number">Number to increment with as a positive integer.</param>
+        /// <returns>The new incremented index.</returns>
         public int IncrementIndex(int index, int number)
         {
             index = index + number;
@@ -496,6 +623,28 @@ namespace PT1
             return index;
         }
 
+        /// <summary>
+        /// Method to check if the error list contains a expected error
+        /// </summary>
+        /// <param name="expectedError">string error value.</param>
+        /// <returns>A boolean value; true if the expected error exists, false otherwise.</returns>
+        public bool ValidateTAFFFileErrors(string expectedError)
+        {
+            foreach (string error in errorList)
+            {
+                if (error == expectedError)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Method to print the error details for the error box.
+        /// </summary>
+        /// <param name="textBox">The text box to append the errors.</param>
+        /// <param name="textHeading">The text heading to change the color.</param>
         public void PrintErrorDetails(TextBox textBox, TextBox textHeading)
         {
             if (errors > 0)

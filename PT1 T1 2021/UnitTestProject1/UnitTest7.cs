@@ -39,20 +39,11 @@ namespace UnitTestProject1
             string expectedError = "TOTAL-RAM=987";
             Console.WriteLine("Expected Error: " + expectedError);
 
-            // assertion variable
-            bool errorFound = false;
-
             // Validating the file, if errors are found they are stored in the list
             configuration.ValidateCFFFile(filelines);
 
             // Act.
-            foreach (string error in configuration.getErrorList())
-            {
-                if (error == expectedError)
-                {
-                    errorFound = true;
-                }
-            }
+            bool errorFound = configuration.ValidateCFFFileErrors(expectedError);
 
             // Assert.
             Assert.IsTrue(errorFound, "Expected error " + expectedError + " not found");
@@ -89,20 +80,12 @@ namespace UnitTestProject1
             string expectedError = "Gbps=123";
             Console.WriteLine("Expected Error: " + expectedError);
 
-            // assertion variable
-            bool errorFound = false;
 
             // Validating the file, if errors are found they are stored in the list
             configuration.ValidateCFFFile(filelines);
 
             // Act.
-            foreach (string error in configuration.getErrorList())
-            {
-                if (error == expectedError)
-                {
-                    errorFound = true;
-                }
-            }
+            bool errorFound = configuration.ValidateCFFFileErrors(expectedError);
 
             // Assert.
             Assert.IsTrue(errorFound, "Expected error " + expectedError + " not found");

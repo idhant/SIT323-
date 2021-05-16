@@ -39,20 +39,11 @@ namespace UnitTestProject1
             string expectedError = "...";
             Console.WriteLine("Expected Error: " + expectedError);
 
-            // assertion variable
-            bool errorFound = false;
-
             // Validating the file, if errors are found they are stored in the list
             taskAllocations.ValidateTAFFFile(filelines);
 
             // Act.
-            foreach(string error in taskAllocations.getErrorList())
-            {
-                if (error == expectedError)
-                {
-                    errorFound = true;
-                }
-            }
+            bool errorFound = taskAllocations.ValidateTAFFFileErrors(expectedError);
 
             // Assert.
             Assert.IsTrue(errorFound, "Expected error " + expectedError + " not found");
@@ -88,20 +79,11 @@ namespace UnitTestProject1
             string expectedError = "LOCATIONS";
             Console.WriteLine("Expected Error: " + expectedError);
 
-            // assertion variable
-            bool errorFound = false;
-
             // Validating the file, if errors are found they are stored in the list
             taskAllocations.ValidateTAFFFile(filelines);
 
             // Act.
-            foreach (string error in taskAllocations.getErrorList())
-            {
-                if (error == expectedError)
-                {
-                    errorFound = true;
-                }
-            }
+            bool errorFound = taskAllocations.ValidateTAFFFileErrors(expectedError);
 
             // Assert.
             Assert.IsTrue(errorFound, "Expected error " + expectedError + " not found");
@@ -137,20 +119,11 @@ namespace UnitTestProject1
             string expectedError = "ID=RICE";
             Console.WriteLine("Expected Error: " + expectedError);
 
-            // assertion variable
-            bool errorFound = false;
-
             // Validating the file, if errors are found they are stored in the list
             taskAllocations.ValidateTAFFFile(filelines);
 
             // Act.
-            foreach (string error in taskAllocations.getErrorList())
-            {
-                if (error == expectedError)
-                {
-                    errorFound = true;
-                }
-            }
+            bool errorFound = taskAllocations.ValidateTAFFFileErrors(expectedError);
 
             // Assert.
             Assert.IsTrue(errorFound, "Expected error " + expectedError + " not found");
