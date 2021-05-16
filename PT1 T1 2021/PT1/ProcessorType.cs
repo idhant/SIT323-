@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PT1
 {
+	/// <summary>
+	/// Class planned for use but not used in the final. Energy values werent calculated
+	/// </summary>
     public class ProcessorType
     {
         // Vars

@@ -11,155 +11,138 @@ using System.Windows.Forms;
 
 namespace PT1
 {
+    /// <summary>
+    /// Object type to store and manipulate the details of the .cff file.
+    /// </summary>
     public class Configuration
     {
-        // array to store the filelines 
+        // CLASS MEMBER VARIABLES
+
+        /// <summary>
+        /// Member Variable which stores the lines from the cff file in a string array.
+        /// </summary>
         private String[] cffFileLines;
 
         // error and validation related vars
+        /// <summary>
+        /// Member Variable which stores the number of errors as a integer.
+        /// </summary>
         private int errors;
+
+        /// <summary>
+        /// Member Variable which stores the errors in a Array List.
+        /// </summary>
         private ArrayList errorList = new ArrayList();
+
+        /// <summary>
+        /// Member Variable which stores a boolean value to see if the cff file is valid or not.
+        /// </summary>
         private bool isValid;
 
-        // Vars to store information retrieve from the file
-        //private string fileName;
-
-        //private int minimumTasks;
-        //private int maximumTasks;
-
+        /// <summary>
+        /// Member variable which stores the maximum allowed program duration.
+        /// </summary>
         private float programDuration;
+
+        /// <summary>
+        /// Member variable which stores the total program tasks.
+        /// </summary>
         private int programTasks;
+
+        /// <summary>
+        /// Member variable which stores the total program processors
+        /// </summary>
         private int programProcessors;
 
+        /// <summary>
+        /// Member Variable which stores the the list of tasks.
+        /// </summary>
         private List<Task> tasksList = new List<Task>();
+
+        /// <summary>
+        /// Member Variable which stores the the list of processors.
+        /// </summary>
         private List<Processor> processorsList = new List<Processor>();
+
+        /// <summary>
+        /// Member Variable which stores the the list of processors energy.
+        /// </summary>
         private List<ProcessorType> processorTypesList = new List<ProcessorType>();
 
-        private float[,] localCommunicationEnergy;
-        private float[,] remoteCommunicationEnergy;
+        //private float[,] localCommunicationEnergy;
+        //private float[,] remoteCommunicationEnergy;
 
+        // CLASS PROPERTY METHODS
+
+        /// <summary>
+        /// Getter property to retrieve all the lines read from the cff file.
+        /// </summary>
+        /// <returns>A string array which contains the lines.</returns>
         public String[] GetCFFFileLines()
         {
             return cffFileLines;
         }
 
-        public int getErrors()
-        {
-            return this.errors;
-        }
-
-        public void setErrors(int errors)
-        {
-            this.errors = errors;
-        }
-
-        public ArrayList getErrorList()
-        {
-            return this.errorList;
-        }
-
-        public void setErrorList(ArrayList errorList)
-        {
-            this.errorList = errorList;
-        }
-
+        /// <summary>
+        /// Getter property to retrieve the bool value representing the validity of the cff file.
+        /// </summary>
+        /// <returns>A boolean value representing the validity of the cff file.</returns>
         public bool getIsValid()
         {
             return this.isValid;
         }
 
+        /// <summary>
+        /// Getter property to retrieve the program duration.
+        /// </summary>
+        /// <returns>A float representing the program duration.</returns>
         public float getProgramDuration()
         {
             return this.programDuration;
         }
 
-        public void setProgramDuration(float programDuration)
-        {
-            this.programDuration = programDuration;
-        }
-
-        public int getProgramTasks()
-        {
-            return this.programTasks;
-        }
-
-        public void setProgramTasks(int programTasks)
-        {
-            this.programTasks = programTasks;
-        }
-
-        public int getProgramProcessors()
-        {
-            return this.programProcessors;
-        }
-
-        public void setProgramProcessors(int programProcessors)
-        {
-            this.programProcessors = programProcessors;
-        }
-
+        /// <summary>
+        /// Getter property to retrieve the tasks list.
+        /// </summary>
+        /// <returns>A list of type List{Task} </returns>
         public List<Task> getTasksList()
         {
             return this.tasksList;
         }
 
-        public void setTasksList(List<Task> tasksList)
-        {
-            this.tasksList = tasksList;
-        }
-
+        /// <summary>
+        /// Getter property to retrieve the tasks list.
+        /// </summary>
+        /// <returns>A list of type List{Task} </returns>
         public List<Processor> getProcessorsList()
         {
             return this.processorsList;
         }
 
-        public void setProcessorsList(List<Processor> processorsList)
-        {
-            this.processorsList = processorsList;
-        }
-
-        public List<ProcessorType> getProcessorTypesList()
-        {
-            return this.processorTypesList;
-        }
-
-        public void setProcessorTypesList(List<ProcessorType> processorTypesList)
-        {
-            this.processorTypesList = processorTypesList;
-        }
-
-        public float[,] getLocalCommunicationEnergy()
-        {
-            return this.localCommunicationEnergy;
-        }
-
-        public void setLocalCommunicationEnergy(float[,] localCommunicationEnergy)
-        {
-            this.localCommunicationEnergy = localCommunicationEnergy;
-        }
-
-        public float[,] getRemoteCommunicationEnergy()
-        {
-            return this.remoteCommunicationEnergy;
-        }
-
-        public void setRemoteCommunicationEnergy(float[,] remoteCommunicationEnergy)
-        {
-            this.remoteCommunicationEnergy = remoteCommunicationEnergy;
-        }
-
+        // CLASS CONSTRUCTORS
 
         public Configuration()
         {
 
         }
 
+        // CLASS METHODS
+
+        /// <summary>
+        /// Method to store the lines read from the cff file to the cffFilelines member variable.
+        /// </summary>
+        /// <param name="filename">The path of the cff file that needs to be read.</param>
         public void StoreCFFLines(String filename)
         {
             this.cffFileLines = File.ReadAllLines(filename);
             Console.WriteLine("CFF File lines copied to ArrrayList.");
         }
 
+        /// <summary>
+        /// Method to append the text of the cff file to the textBox in the application.
+        /// </summary>
+        /// <param name="filename">Path of the file that needs to be read to end.</param>
+        /// <param name="textBox">Textbox to which lines are to be appended.</param>
         public void WriteCFFFileData(String filename, TextBox textBox)
         {
             StreamReader streamReader = new StreamReader(filename);
@@ -169,15 +152,20 @@ namespace PT1
 
         public bool ValidateCFFFile(String[] filelines)
         {
+            // Local initialisation of variables used to hold errors info and index of the line array.
             int index = 0;
             errors = 0;
 
             Console.WriteLine("Validating CFF File. " + "\n");
 
+            // Looping till the file ends.
             while (index < filelines.Length)
-            {
+            { 
+                // initialising the trimmedline and trimming it
                 string trimmedline = null;
                 trimmedline = filelines[index].Trim();
+
+                // Regex init
 
                 Regex comment = new Regex(@"//.*");
 
@@ -253,17 +241,20 @@ namespace PT1
                 Regex remoteCommunicationDataEndpoint = new Regex("END-REMOTE-COMMUNICATION");
                 Regex remoteCommunicationDataMAP = new Regex("MAP=.*");
 
-
+                // Empty Line
                 if (trimmedline.Length == 0)
                 {
                     //Console.WriteLine("Line: " + trimmedline + " : Empty Line -> Valid");
                 }
 
+                // Comment Line
                 else if (comment.IsMatch(trimmedline))
                 {
                     //Console.WriteLine("Line: " + trimmedline + " : Comment Line -> Valid");
                 }
 
+                // Log block
+                // If block invalid add error to list and increment number of errors
                 else if (logfileData.IsMatch(trimmedline))
                 {
                     if (logfileDataEndpoint.IsMatch(trimmedline))
@@ -291,6 +282,8 @@ namespace PT1
                     }
                 }
 
+                // Limits block
+                // If block invalid add error to list and increment number of errors
                 else if (limitsData.IsMatch(trimmedline))
                 {
                     if (limitsDataEndpoint.IsMatch(trimmedline))
@@ -443,6 +436,9 @@ namespace PT1
                     }
                 }
 
+                // Program Block
+                // If block valid, retrieve general program details
+                // If block invalid add error to list and increment number of errors
                 else if (programData.IsMatch(trimmedline))
                 {
                     if (programDataEndpoint.IsMatch(trimmedline))
@@ -498,6 +494,7 @@ namespace PT1
                     }
                 }
 
+                // Used for initial block testing block.
                 else if (tasksData.IsMatch(trimmedline))
                 {
                     if (tasksDataEndpoint.IsMatch(trimmedline))
@@ -511,6 +508,9 @@ namespace PT1
                     }
                 }
 
+                // Task Block
+                // If block valid, retrieve individual task details
+                // If block invalid add errors to list and increment number of errors
                 else if (taskData.IsMatch(trimmedline))
                 {
 
@@ -598,11 +598,13 @@ namespace PT1
 
                 }
 
+                // Used for initial block testing block.
                 else if (taskDataEndpoint.IsMatch(trimmedline))
                 {
                     //Console.WriteLine("Line: " + trimmedline + " : END-TASK -> Valid");
                 }
 
+                // Used for initial block testing block.
                 else if (processorsData.IsMatch(trimmedline))
                 {
                     if (processorsDataEndpoint.IsMatch(trimmedline))
@@ -616,6 +618,9 @@ namespace PT1
                     }
                 }
 
+                // Processor Block
+                // If block valid, retrieve individual processor details
+                // If block invalid add errors to list and increment number of errors
                 else if (processorData.IsMatch(trimmedline))
                 {
                     index = IncrementIndex(index, 1);
@@ -702,11 +707,13 @@ namespace PT1
 
                 }
 
+                // Used for initial block testing block.
                 else if (processorDataEndpoint.IsMatch(trimmedline))
                 {
                     //Console.WriteLine("Line: " + trimmedline + " : END-PROCESSOR -> Valid");
                 }
 
+                // Used for initial block testing block.
                 else if (processorsTypesData.IsMatch(trimmedline))
                 {
                     if (processorsTypesDataEndpoint.IsMatch(trimmedline))
@@ -720,6 +727,9 @@ namespace PT1
                     }
                 }
 
+                // Processor energy Block
+                // If block valid, retrieve individual processor energy details
+                // If block invalid add errors to list and increment number of errors
                 else if (processorTypeData.IsMatch(trimmedline))
                 {
                     if (processorTypeDataEndpoint.IsMatch(trimmedline))
@@ -788,6 +798,9 @@ namespace PT1
                     }
                 }
 
+                // Local Comm block
+                // If block valid, retrieve individual local energy details
+                // If block invalid add errors to list and increment number of errors
                 else if (localCommunicationData.IsMatch(trimmedline))
                 {
                     if (localCommunicationDataEndpoint.IsMatch(trimmedline))
@@ -816,6 +829,9 @@ namespace PT1
                     }
                 }
 
+                // Remote Comm block
+                // If block valid, retrieve individual remote energy details
+                // If block invalid add errors to list and increment number of errors
                 else if (remoteCommunicationData.IsMatch(trimmedline))
                 {
                     if (remoteCommunicationDataEndpoint.IsMatch(trimmedline))
@@ -843,6 +859,8 @@ namespace PT1
                     }
                 }
 
+                // Invalid syntax line
+                // Add error to list and increment number of errors
                 else
                 {
                     //Console.WriteLine("Line: " + trimmedline + " : Line doesn`t match CFF Syntax -> Invalid");
@@ -857,6 +875,9 @@ namespace PT1
 
             Console.WriteLine("Ending Validation of CFF file. " + "\n");
 
+
+            // If errors are there change the isValid to false
+            // Also return false
             if (errors > 0)
             {
                 Console.WriteLine("The CFF file is invalid.");
@@ -874,6 +895,8 @@ namespace PT1
                 return false;
             }
 
+            // Set isValid to true and return true.
+            // Also print out the details of the file.
             else
             {
                 this.isValid = true;
@@ -920,23 +943,42 @@ namespace PT1
             }
         }
 
+        /// <summary>
+        /// Method to retrieve the general program details.
+        /// </summary>
+        /// <param name="programDuration"></param>
+        /// <param name="programTasks"></param>
+        /// <param name="programProcessors"></param>
         public void RetrieveProgramDetails(string programDuration, string programTasks, string programProcessors)
         {
+            string emptyText = "";
             Regex programDataDuration = new Regex("DURATION=");
             Regex programDataTasks = new Regex("TASKS=");
             Regex programDataProcessors = new Regex("PROCESSORS=");
 
-            this.programDuration = float.Parse(programDataDuration.Replace(programDuration, ""));
-            this.programTasks = Int32.Parse(programDataTasks.Replace(programTasks, ""));
-            this.programProcessors = Int32.Parse(programDataProcessors.Replace(programProcessors, ""));
+            this.programDuration = float.Parse(programDataDuration.Replace(programDuration, emptyText));
+            this.programTasks = Int32.Parse(programDataTasks.Replace(programTasks, emptyText));
+            this.programProcessors = Int32.Parse(programDataProcessors.Replace(programProcessors, emptyText));
 
             //Console.WriteLine("Program Duration:  " + this.programDuration + "\n");
             //Console.WriteLine("Program Tasks: " + this.programTasks + "\n");
             //Console.WriteLine("Program Processors: " + this.programProcessors + "\n");
         }
 
+        /// <summary>
+        /// Method to retrieve specific task details.
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="taskRuntime"></param>
+        /// <param name="taskReferenceFrequency"></param>
+        /// <param name="taskRam"></param>
+        /// <param name="taskDownload"></param>
+        /// <param name="taskUpload"></param>
+        /// <returns>Task Object with assigned details.</returns>
         public Task RetrieveTaskDetails(string taskID, string taskRuntime, string taskReferenceFrequency, string taskRam, string taskDownload, string taskUpload)
         {
+            string emptyText = "";
+            
             Regex taskDataID = new Regex("ID=");
             Regex taskDataRuntime = new Regex("RUNTIME=");
             Regex taskDataReffrequency = new Regex("REFERENCE-FREQUENCY=");
@@ -945,16 +987,16 @@ namespace PT1
             Regex taskDataUPLOAD = new Regex("UPLOAD=");
 
             Task task = new Task();
-            int taskId = Int32.Parse(taskDataID.Replace(taskID, ""));
+            int taskId = Int32.Parse(taskDataID.Replace(taskID, emptyText));
 
             if (taskId < programTasks)
             {
-                task.setTaskID(Int32.Parse(taskDataID.Replace(taskID, "")));
-                task.setTaskRuntime(float.Parse(taskDataRuntime.Replace(taskRuntime, "")));
-                task.setTaskReferenceFrequency(float.Parse(taskDataReffrequency.Replace(taskReferenceFrequency, "")));
-                task.setTaskRam(Int32.Parse(taskDataRAM.Replace(taskRam, "")));
-                task.setTaskDownload(Int32.Parse(taskDataDOWNLOAD.Replace(taskDownload, "")));
-                task.setTaskUpload(Int32.Parse(taskDataUPLOAD.Replace(taskUpload, "")));
+                task.setTaskID(Int32.Parse(taskDataID.Replace(taskID, emptyText)));
+                task.setTaskRuntime(float.Parse(taskDataRuntime.Replace(taskRuntime, emptyText)));
+                task.setTaskReferenceFrequency(float.Parse(taskDataReffrequency.Replace(taskReferenceFrequency, emptyText)));
+                task.setTaskRam(Int32.Parse(taskDataRAM.Replace(taskRam, emptyText)));
+                task.setTaskDownload(Int32.Parse(taskDataDOWNLOAD.Replace(taskDownload, emptyText)));
+                task.setTaskUpload(Int32.Parse(taskDataUPLOAD.Replace(taskUpload, emptyText)));
 
                 //Console.WriteLine("Task ID:  " + task.getTaskID() + "\n");
                 //Console.WriteLine("Task Runtime:  " + task.getTaskRuntime() + "\n");
@@ -975,8 +1017,20 @@ namespace PT1
             return task;
         }
 
+        /// <summary>
+        /// Method to retrieve the specific processor details.
+        /// </summary>
+        /// <param name="processorID"></param>
+        /// <param name="processorType"></param>
+        /// <param name="processorFrequency"></param>
+        /// <param name="processorRam"></param>
+        /// <param name="processorDownload"></param>
+        /// <param name="processorUpload"></param>
+        /// <returns>Processor Object with assigned details.</returns>
         public Processor RetrieveProcessorDetails(string processorID, string processorType, string processorFrequency, string processorRam, string processorDownload, string processorUpload)
         {
+            string emptyText = "";
+
             Regex processorDataID = new Regex("ID=");
             Regex processorDataType = new Regex("TYPE=");
             Regex processorDataFrequency = new Regex("FREQUENCY=");
@@ -985,16 +1039,16 @@ namespace PT1
             Regex processorDataUPLOAD = new Regex("UPLOAD=");
 
             Processor processor = new Processor();
-            int processorId = Int32.Parse(processorDataID.Replace(processorID, ""));
+            int processorId = Int32.Parse(processorDataID.Replace(processorID, emptyText));
 
             if (processorId < programProcessors)
             {
-                processor.setProcessorID(Int32.Parse(processorDataID.Replace(processorID, "")));
-                processor.setProcessorType(processorDataType.Replace(processorType, ""));
-                processor.setProcessorFrequency(float.Parse(processorDataFrequency.Replace(processorFrequency, "")));
-                processor.setProcessorRam(Int32.Parse(processorDataRAM.Replace(processorRam, "")));
-                processor.setProcessorDownload(Int32.Parse(processorDataDOWNLOAD.Replace(processorDownload, "")));
-                processor.setProcessorUpload(Int32.Parse(processorDataUPLOAD.Replace(processorUpload, "")));
+                processor.setProcessorID(Int32.Parse(processorDataID.Replace(processorID, emptyText)));
+                processor.setProcessorType(processorDataType.Replace(processorType, emptyText));
+                processor.setProcessorFrequency(float.Parse(processorDataFrequency.Replace(processorFrequency, emptyText)));
+                processor.setProcessorRam(Int32.Parse(processorDataRAM.Replace(processorRam, emptyText)));
+                processor.setProcessorDownload(Int32.Parse(processorDataDOWNLOAD.Replace(processorDownload, emptyText)));
+                processor.setProcessorUpload(Int32.Parse(processorDataUPLOAD.Replace(processorUpload, emptyText)));
 
                 //Console.WriteLine("Processor ID:  " + processor.getProcessorID() + "\n");
                 //Console.WriteLine("Processor Type:  " + processor.getProcessorType() + "\n");
@@ -1015,6 +1069,7 @@ namespace PT1
             return processor;
         }
 
+        // Not Used
         public ProcessorType RetrieveProcessorTypeDetails(string processorName, string processorC2, string processorC1, string processorC0)
         {
             Regex processorTypeDataName = new Regex("NAME=");
@@ -1037,11 +1092,18 @@ namespace PT1
             return processorType;
         }
 
+        // Not Used
         public void RetrieveLocalCommunicationEnergyDetails()
         {
             //[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+
         }
 
+        /// <summary>
+        /// Method used to increment the index in the loop to read the filelines of the cff file.
+        /// </summary>
+        /// <param name="index">Current index as a positive integer.</param>
+        /// <param name="number">Number to increment with as a positive integer.</param>
+        /// <returns>The new incremented index.</returns>
         public int IncrementIndex(int index, int number)
         {
             index = index + number;
@@ -1049,6 +1111,11 @@ namespace PT1
             return index;
         }
 
+        /// <summary>
+        /// Method to check if the error list contains a expected error
+        /// </summary>
+        /// <param name="expectedError">string error value.</param>
+        /// <returns>A boolean value; true if the expected error exists, false otherwise.</returns>
         public bool ValidateCFFFileErrors(string expectedError)
         {
             foreach (string error in errorList)
@@ -1061,6 +1128,11 @@ namespace PT1
             return false;
         }
 
+        /// <summary>
+        /// Method to print the error details for the error box.
+        /// </summary>
+        /// <param name="textBox">The text box to append the errors.</param>
+        /// <param name="textHeading">The text heading to change the color.</param>
         public void PrintErrorDetails(TextBox textBox, TextBox textHeading)
         {
             if (errors > 0)

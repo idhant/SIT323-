@@ -256,8 +256,6 @@ namespace PT1
             // Looping till the file ends.
             while (index < filelines.Length)
             {
-                //Console.WriteLine("Current Index: " + index);
-                
                 // initialising the trimmedline and trimming it
                 string trimmedline = null;
                 trimmedline = filelines[index].Trim();
